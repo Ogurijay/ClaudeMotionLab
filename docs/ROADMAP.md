@@ -12,7 +12,7 @@
 | P1 | 展示页底座：懒挂载、效果注册表、共享着色器 hook、侧边导航、章节框架、源码查看面板 | `done` |
 | P2 | Pixel 像素章首发：PX-02 DitherLens、PX-03 FallingSand、PX-05 CRTScreen | `done` |
 | P3 | Liquid 水滴章首发：LQ-01 RainGlass、LQ-02 InkFluid、LQ-04 GooeyMenu | `done` |
-| P4 | Organic 自然章首发：OR-01 GrassField、OR-02 Fireflies、OR-03 ReactionDiffusion | `planned` |
+| P4 | Organic 自然章首发：OR-01 GrassField、OR-02 Fireflies、OR-03 ReactionDiffusion | `done` |
 | P5 | Paper 纸张章首发：PP-01 PageCurl、PP-04 InkBleed、PP-05 ScribbleUnderline | `planned` |
 | P6 | Glass & Light 光影章首发：GL-01 RefractionLens、GL-02 PrismText、GL-03 GodRays | `planned` |
 | P7 | Physics 物理章首发：PH-01 JellyCard、PH-02 ClothBanner、PH-03 MagnetDots | `planned` |

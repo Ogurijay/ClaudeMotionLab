@@ -196,7 +196,8 @@ export default function ParticleMorph({
       let shapeIdx = 0
       let morphStart = -1
       let lastMorph = 0
-      const clock = new THREE.Clock()
+      const t0 = performance.now()
+      const elapsed = () => (performance.now() - t0) / 1000
       const advance = () => {
         if (uniforms.uProgress.value < 1) return
         geo.attributes.aFrom.array.set(shapes[shapeIdx])
@@ -204,7 +205,7 @@ export default function ParticleMorph({
         geo.attributes.aTo.array.set(shapes[shapeIdx])
         geo.attributes.aFrom.needsUpdate = true
         geo.attributes.aTo.needsUpdate = true
-        morphStart = clock.getElapsedTime()
+        morphStart = elapsed()
         lastMorph = morphStart
         uniforms.uProgress.value = 0
       }
@@ -240,7 +241,7 @@ export default function ParticleMorph({
       const loop = () => {
         raf = requestAnimationFrame(loop)
         if (!visible.current) return
-        const t = clock.getElapsedTime()
+        const t = elapsed()
         uniforms.uTime.value = t
         if (morphStart >= 0) uniforms.uProgress.value = Math.min(1, (t - morphStart) / 2.4)
         if (t - lastMorph > interval) advance()

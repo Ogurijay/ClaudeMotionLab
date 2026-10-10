@@ -1,0 +1,22 @@
+.rd { position: absolute; inset: 0; }
+.rd__presets {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.rd__presets button {
+  padding: 7px 13px;
+  border: 1px solid rgb(190 242 100 / 0.25);
+  border-radius: 999px;
+  background: rgb(5 15 8 / 0.7);
+  backdrop-filter: blur(6px);
+  color: #d9f99d;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+.rd__presets button.is-active { background: #84cc16; border-color: #84cc16; color: #0b1a05; }

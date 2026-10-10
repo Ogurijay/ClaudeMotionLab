@@ -5,6 +5,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-10-10
+
+### Added
+- **Organic chapter** flagship effects:
+  - `GrassField` (OR-01): 60k instanced grass blades in travelling wind gusts at dusk; the cursor flattens the blades around it
+  - `Fireflies` (OR-02): flocking fireflies whose flashes gradually synchronise (Kuramoto coupled oscillators) with a live synchrony meter; they follow the cursor, a click scatters them
+  - `ReactionDiffusion` (OR-03): Gray–Scott reaction–diffusion on the GPU with coral, mitosis, maze and worm presets; hover to seed growth
+- Organic chapter intro transition: vines sprout and curl up through the header
+- `glsim` render targets support 32-bit float precision
+
+### Changed
+- Replaced deprecated `THREE.Clock` with `performance.now()` timing
+
 ## [0.4.0] - 2026-10-10
 
 ### Added
@@ -51,7 +64,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Long-scroll showcase page
 - PolyForm Noncommercial 1.0.0 license
 
-[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.1.0...v0.2.0

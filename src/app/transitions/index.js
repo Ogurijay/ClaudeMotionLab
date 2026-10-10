@@ -2,8 +2,10 @@
 // Each receives { category, active } and replaces the default intro for its chapter.
 import PixelTransition from './PixelTransition.jsx'
 import LiquidTransition from './LiquidTransition.jsx'
+import OrganicTransition from './OrganicTransition.jsx'
 
 export const transitions = {
   pixel: PixelTransition,
   liquid: LiquidTransition,
+  organic: OrganicTransition,
 }

@@ -14,8 +14,8 @@ void main() {
  * @returns {null | {
  *   gl: WebGL2RenderingContext,
  *   program: (fs: string, vs?: string) => { use: () => object, u: Record<string, WebGLUniformLocation> },
- *   target: (w: number, h: number, filter?: number) => object,
- *   doubleTarget: (w: number, h: number, filter?: number) => object,
+ *   target: (w: number, h: number, filter?: number, precision?: 'half' | 'float') => object,
+ *   doubleTarget: (w: number, h: number, filter?: number, precision?: 'half' | 'float') => object,
  *   draw: (target?: object | null) => void,
  *   dispose: () => void,
  * }}
@@ -59,14 +59,17 @@ export function createSim(canvas) {
     return handle
   }
 
-  function target(w, h, filter = gl.LINEAR) {
+  // 'half' (RGBA16F) is plenty for fluids; 'float' (RGBA32F) for stiff systems like reaction–diffusion.
+  // Float textures are only linearly filterable with OES_texture_float_linear, so prefer NEAREST with 'float'.
+  function target(w, h, filter = gl.LINEAR, precision = 'half') {
     const tex = gl.createTexture()
     gl.bindTexture(gl.TEXTURE_2D, tex)
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filter)
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filter)
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16F, w, h, 0, gl.RGBA, gl.HALF_FLOAT, null)
+    if (precision === 'float') gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA32F, w, h, 0, gl.RGBA, gl.FLOAT, null)
+    else gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16F, w, h, 0, gl.RGBA, gl.HALF_FLOAT, null)
     const fbo = gl.createFramebuffer()
     gl.bindFramebuffer(gl.FRAMEBUFFER, fbo)
     gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0)
@@ -83,8 +86,8 @@ export function createSim(canvas) {
     }
   }
 
-  function doubleTarget(w, h, filter) {
-    let a = target(w, h, filter), b = target(w, h, filter)
+  function doubleTarget(w, h, filter, precision) {
+    let a = target(w, h, filter, precision), b = target(w, h, filter, precision)
     return {
       w, h, texel: a.texel,
       get read() { return a },
