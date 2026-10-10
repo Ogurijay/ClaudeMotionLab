@@ -106,6 +106,9 @@ export function useShaderCanvas(opts, deps = []) {
     resize()
     const ro = new ResizeObserver(resize)
     ro.observe(canvas)
+    // text textures drawn before web fonts arrive would use fallback fonts: redraw once they load
+    let disposed = false
+    if (texNames.length) document.fonts?.ready.then(() => { if (!disposed) uploadTextures() })
 
     const toUv = e => {
       const r = canvas.getBoundingClientRect()
@@ -140,6 +143,7 @@ export function useShaderCanvas(opts, deps = []) {
     loop()
 
     return () => {
+      disposed = true
       cancelAnimationFrame(raf)
       ro.disconnect()
       window.removeEventListener('pointermove', onMove)

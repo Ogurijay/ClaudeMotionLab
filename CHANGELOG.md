@@ -5,6 +5,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-10-10
+
+### Added
+- **Glass & Light chapter** flagship effects:
+  - `RefractionLens` (GL-01): a weighted glass lens follows the cursor over an editorial poster — SDF surface normals, magnifying refraction, chromatic dispersion at the rim, fresnel and specular; click to morph between sphere and pill
+  - `PrismText` (GL-02): the cursor is a light source; each wavelength sees the glyphs at a slightly different offset and coloured rays stream away from the letters
+  - `GodRays` (GL-03): screen-space light scattering — a sun behind cut-out lettering throws crepuscular rays through dusty air, with rim-lit silhouettes
+- Glass & Light chapter intro transition: a bright beam sweeps across and leaves the header lit
+- `useShaderCanvas` redraws texture uniforms once web fonts have loaded
+
 ## [0.6.0] - 2026-10-10
 
 ### Added
@@ -74,7 +84,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Long-scroll showcase page
 - PolyForm Noncommercial 1.0.0 license
 
-[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.6.0...HEAD
+[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.3.0...v0.4.0

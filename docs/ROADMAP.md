@@ -14,7 +14,7 @@
 | P3 | Liquid 水滴章首发：LQ-01 RainGlass、LQ-02 InkFluid、LQ-04 GooeyMenu | `done` |
 | P4 | Organic 自然章首发：OR-01 GrassField、OR-02 Fireflies、OR-03 ReactionDiffusion | `done` |
 | P5 | Paper 纸张章首发：PP-01 PageCurl、PP-04 InkBleed、PP-05 ScribbleUnderline | `done` |
-| P6 | Glass & Light 光影章首发：GL-01 RefractionLens、GL-02 PrismText、GL-03 GodRays | `planned` |
+| P6 | Glass & Light 光影章首发：GL-01 RefractionLens、GL-02 PrismText、GL-03 GodRays | `done` |
 | P7 | Physics 物理章首发：PH-01 JellyCard、PH-02 ClothBanner、PH-03 MagnetDots | `planned` |
 | P8 | 打磨与发布：性能审计、移动端适配、GitHub Pages 部署 | `planned` |
 | P9 | 扩充批次：各章剩余的批次 2 效果（共 14 个，含 CY-07、CY-08） | `planned` |

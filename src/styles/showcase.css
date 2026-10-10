@@ -283,3 +283,18 @@
   transition: transform 0.75s cubic-bezier(0.6, 0, 0.25, 1), opacity 0.3s 0.5s;
 }
 .tx-paper.is-open span { transform: rotateY(-95deg); opacity: 0; }
+.tx-beam {
+  position: absolute;
+  inset: -24px 0;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(105deg,
+    rgb(7 7 11 / 0) 0%, rgb(7 7 11 / 0) 30%,
+    rgb(165 243 252 / 0.5) 36%, rgb(255 255 255 / 0.95) 38%, rgb(165 243 252 / 0.5) 40%,
+    rgb(7 7 11 / 1) 46%, rgb(7 7 11 / 1) 100%);
+  background-size: 320% 100%;
+  background-position: 100% 0;
+  mix-blend-mode: normal;
+  transition: background-position 1.5s cubic-bezier(0.5, 0, 0.3, 1), opacity 0.4s 1.4s;
+}
+.tx-beam.is-on { background-position: 0% 0; opacity: 0; }
