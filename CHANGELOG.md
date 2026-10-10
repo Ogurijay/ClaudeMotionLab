@@ -5,6 +5,28 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-10-10
+
+Performance release: the page stays smooth on integrated GPUs and high-DPI screens.
+
+### Added
+- `src/lib/perf.js` performance governor: quality levels (auto / high / power-saving) with a fixed switch in the bottom-left corner, `targetDpr` caps, frame-time driven adaptive resolution (`createScaler`, `adaptiveRenderer`)
+- Background shader compilation (`KHR_parallel_shader_compile`) in `useShaderCanvas` and `glsim`; Three.js effects call `renderer.compileAsync` before their first frame
+- ESLint (`npm run lint`), now part of the Definition of Done
+
+### Changed
+- `LazyMount` mounts one effect at a time from a priority queue: closest to the viewport first, on-screen effects within 50 ms (jumping ahead of idle pre-mounts)
+- Stages use `contain: strict`, so per-frame DOM work inside an effect never re-lays out the long page
+- Fonts are self-hosted via @fontsource (Google Fonts was render-blocking and slow or unreachable on some networks)
+- Lower DPR caps for soft shaders (LiquidChrome, RainGlass, GodRays, AuroraSky); GrassField 36k blades; ReactionDiffusion adapts simulation steps; lighter SpiralGallery textures
+- `SpotlightReveal` beam is a transform-moved overlay (compositor only) instead of a per-frame CSS mask repaint
+- `HoloCard` and `SpotlightReveal` loops sleep when idle or off screen; `KineticType` and `useShaderCanvas` no longer read layout every frame
+- Removed `backdrop-filter` from overlays above animated canvases; `ChapterNav` coalesces scroll updates per frame
+- `JellyCard` uses `MeshStandardMaterial` (much smaller shader than the physical material)
+
+### Fixed
+- `SpiralGallery` crashed after the adaptive-renderer change (missing import) — caught by the new lint step
+
 ## [1.3.0] - 2026-10-10
 
 All 38 planned effects are live — every chapter is complete.
@@ -154,7 +176,8 @@ First stable release: all seven chapters have their flagship effects, the page i
 - Long-scroll showcase page
 - PolyForm Noncommercial 1.0.0 license
 
-[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v1.3.0...HEAD
+[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v1.0.0...v1.1.0

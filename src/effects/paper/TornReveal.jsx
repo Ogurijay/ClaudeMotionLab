@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useVisibility } from '../../hooks/useVisibility'
 import './TornReveal.css'
+import { targetDpr } from '../../lib/perf'
 
 // kraft paper with print, drawn once per size
 function paintPaper(ctx, W, H) {
@@ -12,7 +13,7 @@ function paintPaper(ctx, W, H) {
   }
   ctx.fillStyle = 'rgba(60,40,20,0.85)'
   ctx.textAlign = 'center'
-  ctx.font = `900 ${Math.min(H * 0.16, W * 0.12)}px Inter, "Arial Black", sans-serif`
+  ctx.font = `900 ${Math.min(H * 0.16, W * 0.12)}px "Inter Variable", Inter, "Arial Black", sans-serif`
   ctx.fillText('TEAR ME', W / 2, H * 0.45)
   ctx.font = `500 ${Math.max(12, H * 0.035)}px "JetBrains Mono", monospace`
   ctx.fillText('drag across the paper to rip it open', W / 2, H * 0.58)
@@ -42,7 +43,7 @@ export default function TornReveal({ stripWidth = 70 }) {
     let path = null
 
     const resize = () => {
-      dpr = Math.min(window.devicePixelRatio, 2)
+      dpr = targetDpr(1.5)
       const r = paper.getBoundingClientRect()
       W = r.width; H = r.height
       for (const c of [paper, fx]) { c.width = W * dpr; c.height = H * dpr }

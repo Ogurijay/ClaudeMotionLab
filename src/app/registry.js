@@ -117,7 +117,7 @@ export const effects = [
   // ── OR · Organic ────────────────────────────────────────────
   { id: 'OR-01', category: 'organic', name: 'GrassField', status: 'done', wave: 1, webgl: true,
     desc: '上万根草随风摆动，鼠标划过时被压弯',
-    tags: ['Three.js', 'instancing', '60k blades'], hint: '在草地上移动鼠标 —— 草会被压倒，风一阵阵吹过',
+    tags: ['Three.js', 'instancing', '36k blades'], hint: '在草地上移动鼠标 —— 草会被压倒，风一阵阵吹过',
     load: () => import('../effects/organic/GrassField.jsx'), files: ['organic/GrassField.jsx'] },
   { id: 'OR-02', category: 'organic', name: 'Fireflies', status: 'done', wave: 1,
     desc: '萤火虫群体行为（Boids），明灭闪烁，跟随或躲避鼠标',
@@ -173,7 +173,7 @@ export const effects = [
     load: () => import('../effects/glass/GodRays.jsx'), files: ['glass/GodRays.jsx', '../hooks/useShaderCanvas.js'] },
   { id: 'GL-04', category: 'glass', name: 'SpotlightReveal', status: 'done', wave: 2,
     desc: '黑暗中用手电筒照出隐藏内容，带光晕衰减与轻微闪烁',
-    tags: ['CSS mask', '@property'], hint: '用鼠标当手电筒找出藏起来的东西 · 点击切换光束宽窄',
+    tags: ['CSS transforms', 'compositor-only'], hint: '用鼠标当手电筒找出藏起来的东西 · 点击切换光束宽窄',
     load: () => import('../effects/glass/SpotlightReveal.jsx'), files: ['glass/SpotlightReveal.jsx', 'glass/SpotlightReveal.css'] },
 
   // ── PH · Physics ────────────────────────────────────────────

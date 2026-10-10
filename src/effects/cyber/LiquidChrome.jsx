@@ -85,6 +85,7 @@ export default function LiquidChrome({ speed = 1, tint = 0.8, className = '' }) 
 
   const canvasRef = useShaderCanvas({
     fragment: FRAG,
+    dprCap: 1.0,
     speed,
     onFrame: ({ gl, uniform }) => {
       gl.uniform4fv(uniform('uRipples'), ripples.current)

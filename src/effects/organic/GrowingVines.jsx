@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useVisibility } from '../../hooks/useVisibility'
+import { targetDpr } from '../../lib/perf'
 
 const FLOWERS = ['#f9a8d4', '#fde68a', '#f5f5f4', '#c4b5fd']
 
@@ -33,7 +34,7 @@ export default function GrowingVines({ seeds = 7, maxDepth = 4 }) {
       doneAt = 0
     }
     const resize = () => {
-      dpr = Math.min(window.devicePixelRatio, 2)
+      dpr = targetDpr(1.5)
       const r = canvas.getBoundingClientRect()
       W = r.width; H = r.height
       canvas.width = W * dpr; canvas.height = H * dpr

@@ -11,8 +11,7 @@
   padding: 7px 13px;
   border: 1px solid rgb(190 242 100 / 0.25);
   border-radius: 999px;
-  background: rgb(5 15 8 / 0.7);
-  backdrop-filter: blur(6px);
+  background: rgb(5 15 8 / 0.85);
   color: #d9f99d;
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;

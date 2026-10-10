@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { useVisibility } from '../../hooks/useVisibility'
+import { adaptiveRenderer } from '../../lib/perf'
 
 const VERT = /* glsl */ `
 varying vec3 vN;
@@ -56,7 +57,7 @@ export default function BubbleField({ count = 24 }) {
   useEffect(() => {
     const mount = mountRef.current
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    const perf = adaptiveRenderer(renderer, 1.5, () => resize())
     renderer.domElement.className = 'fx-canvas'
     mount.appendChild(renderer.domElement)
 
@@ -135,10 +136,15 @@ export default function BubbleField({ count = 24 }) {
     ro.observe(mount)
 
     const t0 = performance.now()
+    // compile every material in the background before the first frame, so mounting
+    // this effect mid-scroll doesn't stall the main thread on shader compilation
+    let compiled = false
+    renderer.compileAsync(scene, camera).catch(() => {}).finally(() => { compiled = true })
     let raf
     const loop = () => {
       raf = requestAnimationFrame(loop)
-      if (!visible.current) return
+      if (!perf.frame(visible.current)) return
+      if (!compiled) return
       const t = (performance.now() - t0) / 1000
       for (const b of bubbles) {
         b.mesh.material.uniforms.uTime.value = t
@@ -187,6 +193,7 @@ export default function BubbleField({ count = 24 }) {
 
     return () => {
       cancelAnimationFrame(raf)
+      perf.dispose()
       ro.disconnect()
       renderer.domElement.removeEventListener('pointermove', onMove)
       renderer.domElement.removeEventListener('pointerleave', onLeave)

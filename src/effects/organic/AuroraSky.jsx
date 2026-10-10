@@ -70,9 +70,11 @@ void main() {
 export default function AuroraSky({ speed = 1 }) {
   const canvasRef = useShaderCanvas({
     fragment: FRAG,
+    dprCap: 1.0,
     speed,
     mouseEase: 0.03,
-    onFrame: ({ gl, uniform }) => gl.uniform1f(uniform('uScroll'), window.scrollY / Math.max(1, document.documentElement.scrollHeight)),
+    // scroll offset only needs to drift the curtains; avoid reading layout (scrollHeight) every frame
+    onFrame: ({ gl, uniform }) => gl.uniform1f(uniform('uScroll'), window.scrollY / 40000),
   })
   return <canvas ref={canvasRef} className="fx-canvas" />
 }

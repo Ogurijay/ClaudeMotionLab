@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useVisibility } from '../../hooks/useVisibility'
+import { targetDpr } from '../../lib/perf'
 
 const PALETTE = ['#fde047', '#facc15', '#fb923c', '#f472b6', '#c084fc']
 
@@ -19,7 +20,7 @@ export default function PixelText({ text = 'PIXEL', cell = 14 }) {
     const ptr = { x: -999, y: -999 }
 
     const build = () => {
-      dpr = Math.min(window.devicePixelRatio, 2)
+      dpr = targetDpr(1.5)
       const r = canvas.getBoundingClientRect()
       W = r.width; H = r.height
       canvas.width = W * dpr; canvas.height = H * dpr
@@ -30,7 +31,7 @@ export default function PixelText({ text = 'PIXEL', cell = 14 }) {
       g.fillStyle = '#fff'
       g.textAlign = 'center'
       g.textBaseline = 'middle'
-      g.font = `900 ${Math.min(off.height * 0.62, off.width / (text.length * 0.72))}px Inter, "Arial Black", sans-serif`
+      g.font = `900 ${Math.min(off.height * 0.62, off.width / (text.length * 0.72))}px "Inter Variable", Inter, "Arial Black", sans-serif`
       g.fillText(text, off.width / 2, off.height * 0.52)
       const data = g.getImageData(0, 0, off.width, off.height).data
       blocks = []

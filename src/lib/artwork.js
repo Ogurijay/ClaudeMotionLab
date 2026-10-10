@@ -36,7 +36,7 @@ export function neonPoster(w, h, title = 'GLITCH') {
   g.fillStyle = '#f5f3ff'
   g.textAlign = 'center'
   g.textBaseline = 'middle'
-  g.font = `900 ${Math.min(h * 0.2, w / (title.length * 0.75))}px Inter, "Arial Black", sans-serif`
+  g.font = `900 ${Math.min(h * 0.2, w / (title.length * 0.75))}px "Inter Variable", Inter, "Arial Black", sans-serif`
   g.shadowColor = '#00f0ff'
   g.shadowBlur = h * 0.03
   g.fillText(title, cx, h * 0.2)
@@ -110,7 +110,7 @@ export function idCard(w, h) {
   g.beginPath(); g.arc(px, py - ch * 0.08, ch * 0.13, 0, Math.PI * 2); g.stroke()
   g.beginPath(); g.ellipse(px, py + ch * 0.22, ch * 0.22, ch * 0.14, 0, Math.PI, 0); g.stroke()
   g.strokeRect(px - ch * 0.26, py - ch * 0.32, ch * 0.52, ch * 0.66)
-  g.font = `700 ${ch * 0.09}px Inter, "Arial Black", sans-serif`
+  g.font = `700 ${ch * 0.09}px "Inter Variable", Inter, "Arial Black", sans-serif`
   g.fillText('AGENT · CML-08', x0 + cw * 0.42, y0 + ch * 0.22)
   g.font = `500 ${ch * 0.045}px "JetBrains Mono", monospace`
   const rows = ['CLEARANCE ....... LEVEL 5', 'SECTOR .......... HOLO-LAB', 'ISSUED .......... 2026.10.10', 'STATUS .......... VERIFIED']

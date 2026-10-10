@@ -131,6 +131,7 @@ export default function RainGlass({ rain = 1, speed = 1 }) {
 
   const canvasRef = useShaderCanvas({
     fragment: FRAG,
+    dprCap: 1.0,
     speed,
     onFrame: ({ gl, uniform, mouse, time }) => {
       if (mouse.inside) {

@@ -9,7 +9,7 @@
 | 3D | Three.js | 粒子、网格、自定义 ShaderMaterial |
 | 着色器 | GLSL ES 3.0 / 1.0 | 原生 WebGL2 全屏着色器，或经 Three.js 的 ShaderMaterial |
 | 2D | Canvas 2D | 线条、像素、物理类效果 |
-| 字体 | Inter（可变字重 100–900）、JetBrains Mono | 通过 Google Fonts 加载 |
+| 字体 | Inter Variable（100–900）、JetBrains Mono | 通过 @fontsource 自托管随构建打包，不依赖外部 CDN |
 
 ## 目录结构
 
@@ -30,6 +30,7 @@ ClaudeMotionLab/
 │   │   ├── EffectView.jsx      按需加载效果模块并渲染 demo
 │   │   ├── LazyMount.jsx       视口懒挂载 / 卸载
 │   │   ├── SourceViewer.jsx    源码面板：props 解析、语法高亮、复制
+│   │   ├── QualityToggle.jsx   画质开关（自动 / 高 / 省电）
 │   │   └── transitions/        各章节的自定义过场（index.js 按类别登记）
 │   ├── effects/                所有效果组件，按类别分文件夹
 │   │   ├── cyber/              CY · 赛博霓虹
@@ -45,6 +46,7 @@ ClaudeMotionLab/
 │   │   ├── glass/              GL · 光影（P6）
 │   │   └── physics/            PH · 物理（P7）
 │   ├── lib/                    跨效果复用的非 hook 工具
+│   │   ├── perf.js             性能调节器：画质档位、DPR 上限、自适应分辨率
 │   │   ├── glsim.js            多 pass GPU 模拟底座（浮点帧缓冲、双缓冲、程序管理）
 │   │   └── artwork.js          程序化插画（海报、风景、证件），作为着色器的图片素材
 │   ├── hooks/                  跨效果复用的 hooks
@@ -93,13 +95,24 @@ ClaudeMotionLab/
 - 组件卸载时必须释放全部 GPU 资源（geometry、material、texture、renderer），并主动释放上下文：
   `useShaderCanvas` 调用 `WEBGL_lose_context`，Three.js 效果调用 `renderer.forceContextLoss()`
 
+### 性能调节（`lib/perf.js`）
+
+- **画质档位**：`auto`（默认，自适应）/ `high`（固定最高分辨率）/ `low`（省电，DPR 上限 0.75），由页面左下角开关切换并记入 localStorage
+- **DPR 上限**：`targetDpr(cap)`。柔和、模糊的着色器（LiquidChrome、RainGlass、GodRays、AuroraSky）上限 1；细节型效果 1.25–1.5
+- **自适应分辨率**：`createScaler()` 根据帧时间调节渲染比例：低于约 50fps 时快速降到最低 0.5，有余量时缓慢回升。`useShaderCanvas` 已内置；Three.js 效果用 `adaptiveRenderer(renderer, cap, resize)`；ReactionDiffusion 改为调节每帧模拟步数
+- **异步着色器编译**：`useShaderCanvas` 与 `glsim` 借助 `KHR_parallel_shader_compile` 在后台编译，就绪后才开始绘制；Three.js 效果在首帧前调用 `renderer.compileAsync`。效果在滚动途中挂载时不会因编译阻塞主线程
+- **挂载队列**：`LazyMount` 每次只挂载一个效果，优先离视口中心最近的；屏幕上的效果 50ms 内挂载并可插队，屏幕外的预加载等浏览器空闲
+- **渲染隔离**：`.demo__stage` 设置 `contain: strict`，舞台内每帧的 DOM 变化不会引起整页重排、重绘
+- **循环休眠**：DOM 动画（HoloCard、SpotlightReveal）在静止或离屏时停止 requestAnimationFrame
+- **合成层优先**：能用 transform / opacity 完成的动画不用会触发重绘的属性（例如 SpotlightReveal 用移动镂空遮罩层，而不是每帧改 mask）
+
 ### 性能基线
 
 | 项 | 约束 |
 |---|---|
-| 设备像素比 | 全屏着色器上限 1.5，Three.js 场景上限 2 |
+| 设备像素比 | 由 `targetDpr(cap)` 统一控制：柔和着色器 1，其余 1.25–1.5；并叠加自适应比例 |
 | 帧率目标 | 主流集成显卡上保持 60fps |
-| 粒子数量 | 单个效果不超过 20k（可通过 props 调整） |
+| 粒子 / 实例数量 | 单个效果不超过约 36k（GrassField），小屏再减半 |
 | 资源 | 效果优先程序化生成纹理与图案，尽量不依赖外部图片 |
 
 ### 移动端

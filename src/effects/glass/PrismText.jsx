@@ -62,11 +62,12 @@ void main() {
  * sees the glyphs at a slightly different place, and coloured rays stream
  * away from the letters.
  */
-export default function PrismText({ text = 'PRISM', font = '900 1px Inter, "Arial Black", sans-serif' }) {
+export default function PrismText({ text = 'PRISM', font = '900 1px "Inter Variable", Inter, "Arial Black", sans-serif' }) {
   const light = useRef({ x: 0.5, y: 0.6 })
 
   const canvasRef = useShaderCanvas({
     fragment: FRAG,
+    dprCap: 1.25,
     mouseEase: 1,
     onFrame: ({ gl, uniform, mouse, time }) => {
       // follow the cursor; drift along a slow orbit when it is elsewhere

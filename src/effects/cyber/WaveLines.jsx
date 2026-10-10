@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useVisibility } from '../../hooks/useVisibility'
+import { targetDpr } from '../../lib/perf'
 
 // compact 2D gradient noise
 const perm = new Uint8Array(512)
@@ -36,7 +37,7 @@ export default function WaveLines({ rows = 46, points = 140, colors = ['#22d3ee'
     let W = 0, H = 0, dpr = 1
 
     const resize = () => {
-      dpr = Math.min(window.devicePixelRatio, 2)
+      dpr = targetDpr(1.25)   // 46 filled + stroked rows: keep the fill rate modest
       const r = canvas.getBoundingClientRect()
       W = r.width; H = r.height
       canvas.width = W * dpr; canvas.height = H * dpr

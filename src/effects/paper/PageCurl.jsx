@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { useVisibility } from '../../hooks/useVisibility'
+import { adaptiveRenderer } from '../../lib/perf'
 
 const PW = 2.4, PH = 3.2      // page size in world units, centred on the origin
 const R = 0.2                 // curl cylinder radius
@@ -135,7 +136,7 @@ export default function PageCurl({ pages = PAGES }) {
   useEffect(() => {
     const mount = mountRef.current
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    const perf = adaptiveRenderer(renderer, 1.5, () => resize())
     renderer.domElement.className = 'fx-canvas'
     renderer.domElement.style.cursor = 'grab'
     renderer.domElement.style.touchAction = 'none'   // dragging must not scroll the page
@@ -252,10 +253,15 @@ export default function PageCurl({ pages = PAGES }) {
     ro.observe(mount)
 
     const t0 = performance.now()
+    // compile every material in the background before the first frame, so mounting
+    // this effect mid-scroll doesn't stall the main thread on shader compilation
+    let compiled = false
+    renderer.compileAsync(scene, camera).catch(() => {}).finally(() => { compiled = true })
     let raf
     const loop = () => {
       raf = requestAnimationFrame(loop)
-      if (!visible.current) return
+      if (!perf.frame(visible.current)) return
+      if (!compiled) return
       const t = (performance.now() - t0) / 1000
       if (!dragging && !turning && target.equals(corner)) {
         // idle: the bottom corner lifts a little, inviting a drag
@@ -281,6 +287,7 @@ export default function PageCurl({ pages = PAGES }) {
 
     return () => {
       cancelAnimationFrame(raf)
+      perf.dispose()
       ro.disconnect()
       renderer.domElement.removeEventListener('pointerdown', onDown)
       renderer.domElement.removeEventListener('pointermove', onMove)

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { useVisibility } from '../../hooks/useVisibility'
+import { adaptiveRenderer } from '../../lib/perf'
 
 // ---------- shape generators: each returns Float32Array(count * 3) ----------
 
@@ -10,7 +11,7 @@ function textShape(text, count) {
   c.width = W; c.height = H
   const g = c.getContext('2d')
   g.fillStyle = '#fff'
-  g.font = '900 250px Inter, Arial, sans-serif'
+  g.font = '900 250px "Inter Variable", Inter, Arial, sans-serif'
   g.textAlign = 'center'
   g.textBaseline = 'middle'
   g.fillText(text, W / 2, H / 2)
@@ -128,7 +129,6 @@ void main() {
   gl_FragColor = vec4(col * a, a);
 }`
 
-const easeInOut = t => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
 
 /**
  * Thousands of GPU particles that morph between text and 3D shapes.
@@ -150,10 +150,10 @@ export default function ParticleMorph({
     let disposed = false
     let cleanup = () => {}
 
-    document.fonts.load('900 250px Inter').finally(() => {
+    document.fonts.load('900 250px "Inter Variable"').finally(() => {
       if (disposed) return
       const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+      const perf = adaptiveRenderer(renderer, 1.5, () => resize())
       mount.appendChild(renderer.domElement)
       renderer.domElement.className = 'fx-canvas'
 
@@ -237,10 +237,20 @@ export default function ParticleMorph({
       const ro = new ResizeObserver(resize)
       ro.observe(mount)
 
+      // compile every material in the background before the first frame, so mounting
+
+      // this effect mid-scroll doesn't stall the main thread on shader compilation
+
+      let compiled = false
+
+      renderer.compileAsync(scene, camera).catch(() => {}).finally(() => { compiled = true })
+
       let raf
       const loop = () => {
         raf = requestAnimationFrame(loop)
-        if (!visible.current) return
+        if (!perf.frame(visible.current)) return
+        if (!compiled) return
+        uniforms.uSize.value = 38 * renderer.getPixelRatio()   // keep point size constant across resolution changes
         const t = elapsed()
         uniforms.uTime.value = t
         if (morphStart >= 0) uniforms.uProgress.value = Math.min(1, (t - morphStart) / 2.4)
@@ -263,6 +273,7 @@ export default function ParticleMorph({
 
       cleanup = () => {
         cancelAnimationFrame(raf)
+        perf.dispose()
         ro.disconnect()
         geo.dispose()
         mat.dispose()

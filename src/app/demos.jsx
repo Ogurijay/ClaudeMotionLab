@@ -6,7 +6,7 @@ const small = () => window.innerWidth < 700
 
 export const demos = {
   'CY-02': ParticleMorph => <ParticleMorph words={['MOTION', 'LAB']} count={small() ? 9000 : 18000} />,
-  'OR-01': GrassField => <GrassField count={small() ? 20000 : 60000} />,
+  'OR-01': GrassField => <GrassField count={small() ? 14000 : 36000} />,
   'OR-02': Fireflies => <Fireflies count={small() ? 110 : 180} />,
   'CY-03': HoloCard => (
     <div className="cards">

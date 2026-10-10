@@ -9,6 +9,7 @@ Claude Motion Lab: original 3D & UI motion components (React 19 + Three.js + GLS
 ## Commands
 
 - `npm run dev` — dev server
+- `npm run lint` — ESLint (no-undef etc.; must pass before committing)
 - `npm run build` — production build (must pass before committing)
 - Pushing to `main` deploys to GitHub Pages (`.github/workflows/deploy.yml`); live at https://ogurijay.github.io/ClaudeMotionLab/
 
@@ -26,6 +27,7 @@ Claude Motion Lab: original 3D & UI motion components (React 19 + Three.js + GLS
 - Follow `docs/CONVENTIONS.md` (naming, component contract, GLSL prefixes, Conventional Commits, Definition of Done).
 - When adding or finishing an effect, update `docs/EFFECTS.md` and the `[Unreleased]` section of `CHANGELOG.md` in the same commit.
 - Keep the WebGL context budget in mind (`docs/ARCHITECTURE.md`): pause offscreen, dispose all GPU resources on unmount.
+- Performance rules (`src/lib/perf.js`, CONVENTIONS rule 9): DPR via `targetDpr`, adaptive resolution, async shader compile, no layout reads in animation loops, no `backdrop-filter` over animated canvases.
 - Do not use React StrictMode (it double-creates WebGL contexts in dev).
 - Single-branch workflow: commit directly on `main`, no feature branches.
 - Project docs are written in Chinese; code, comments and commit messages in English.

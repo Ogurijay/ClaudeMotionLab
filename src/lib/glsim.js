@@ -17,6 +17,7 @@ void main() {
  *   target: (w: number, h: number, filter?: number, precision?: 'half' | 'float') => object,
  *   doubleTarget: (w: number, h: number, filter?: number, precision?: 'half' | 'float') => object,
  *   draw: (target?: object | null) => void,
+ *   ready: () => boolean,
  *   dispose: () => void,
  * }}
  */
@@ -34,29 +35,51 @@ export function createSim(canvas) {
 
   const programs = [], textures = [], fbos = []
 
+  // Programs compile in the background (KHR_parallel_shader_compile): nothing queries their
+  // status until ready() says they are done, so creating a sim never blocks the main thread.
+  const parallel = gl.getExtension('KHR_parallel_shader_compile')
   const compile = (type, src) => {
     const s = gl.createShader(type)
     gl.shaderSource(s, src)
     gl.compileShader(s)
-    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s))
     return s
   }
 
   function program(fs, vs = QUAD_VS) {
     const p = gl.createProgram()
+    const fsh = compile(gl.FRAGMENT_SHADER, fs)
     gl.attachShader(p, compile(gl.VERTEX_SHADER, vs))
-    gl.attachShader(p, compile(gl.FRAGMENT_SHADER, fs))
+    gl.attachShader(p, fsh)
     gl.linkProgram(p)
-    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p))
-    const u = {}
-    const n = gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS)
-    for (let i = 0; i < n; i++) {
-      const name = gl.getActiveUniform(p, i).name.replace(/\[0\]$/, '')
-      u[name] = gl.getUniformLocation(p, name)
+    programs.push({ p, fsh })
+    let u = null
+    const handle = {
+      /** uniform locations, collected on first use (after ready()) */
+      get u() {
+        if (!u) {
+          u = {}
+          const n = gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS)
+          for (let i = 0; i < n; i++) {
+            const name = gl.getActiveUniform(p, i).name.replace(/\[0\]$/, '')
+            u[name] = gl.getUniformLocation(p, name)
+          }
+        }
+        return u
+      },
+      use: () => { gl.useProgram(p); return handle },
     }
-    programs.push(p)
-    const handle = { u, use: () => { gl.useProgram(p); return handle } }
     return handle
+  }
+
+  let allReady = false
+  /** true once every program has compiled and linked; poll before the first draw */
+  function ready() {
+    if (allReady) return true
+    if (parallel && programs.some(({ p }) => !gl.getProgramParameter(p, parallel.COMPLETION_STATUS_KHR))) return false
+    for (const { p, fsh } of programs) {
+      if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getShaderInfoLog(fsh) || gl.getProgramInfoLog(p))
+    }
+    return (allReady = true)
   }
 
   // 'half' (RGBA16F) is plenty for fluids; 'float' (RGBA32F) for stiff systems like reaction–diffusion.
@@ -103,7 +126,7 @@ export function createSim(canvas) {
   }
 
   function dispose() {
-    programs.forEach(p => gl.deleteProgram(p))
+    programs.forEach(({ p }) => gl.deleteProgram(p))
     textures.forEach(t => gl.deleteTexture(t))
     fbos.forEach(f => gl.deleteFramebuffer(f))
     gl.deleteBuffer(vbo)
@@ -111,5 +134,5 @@ export function createSim(canvas) {
     gl.getExtension('WEBGL_lose_context')?.loseContext()
   }
 
-  return { gl, program, target, doubleTarget, draw, dispose }
+  return { gl, program, target, doubleTarget, draw, dispose, ready }
 }

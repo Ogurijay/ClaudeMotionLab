@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { createSim } from '../../lib/glsim'
 import { useVisibility } from '../../hooks/useVisibility'
+import { createScaler } from '../../lib/perf'
 import './ReactionDiffusion.css'
 
 // Gray–Scott feed / kill rates that produce distinct families of patterns
@@ -73,7 +74,7 @@ void main() {
  * Gray–Scott reaction–diffusion growing Turing patterns in real time:
  * coral, cell division, mazes and worms. Hover to seed new growth.
  */
-export default function ReactionDiffusion({ preset = 'coral', resolution = 0.5, stepsPerFrame = 12 }) {
+export default function ReactionDiffusion({ preset = 'coral', resolution = 0.4, stepsPerFrame = 10 }) {
   const canvasRef = useRef(null)
   const visible = useVisibility(canvasRef)
   const [mode, setMode] = useState(PRESETS[preset] ? preset : 'coral')
@@ -88,7 +89,7 @@ export default function ReactionDiffusion({ preset = 'coral', resolution = 0.5, 
     if (!sim) return
     const { gl } = sim
     const P = { step: sim.program(STEP), seed: sim.program(SEED), reset: sim.program(RESET), display: sim.program(DISPLAY) }
-    let state, aspect = 1
+    let state, aspect = 1, needsReset = true
 
     const seed = (x, y, r) => {
       P.seed.use()
@@ -109,7 +110,7 @@ export default function ReactionDiffusion({ preset = 'coral', resolution = 0.5, 
       canvas.height = Math.max(1, r.height | 0)
       aspect = canvas.width / canvas.height
       state = sim.doubleTarget(Math.max(64, (canvas.width * resolution) | 0), Math.max(64, (canvas.height * resolution) | 0), gl.NEAREST, 'float')
-      reset()
+      needsReset = true
     }
     build()
     resetRef.current = reset
@@ -128,17 +129,23 @@ export default function ReactionDiffusion({ preset = 'coral', resolution = 0.5, 
     })
     ro.observe(canvas)
 
-    let raf
-    const loop = () => {
+    // fewer simulation steps per frame when frames run slow (patterns just grow more slowly)
+    const scaler = createScaler({ min: 0.4 })
+    let raf, last = 0
+    const loop = now => {
       raf = requestAnimationFrame(loop)
-      if (!visible.current) return
+      if (!visible.current || !sim.ready()) { last = 0; return }
+      if (needsReset) { needsReset = false; reset() }
+      if (last) scaler.tick(now - last); else scaler.reset()
+      last = now
+      const steps = Math.max(3, Math.round(stepsPerFrame * scaler.scale))
       if (ptr.inside) seed(ptr.x, ptr.y, 0.01)
       const { f, k } = PRESETS[modeRef.current]
       P.step.use()
       gl.uniform2f(P.step.u.uTexel, ...state.texel)
       gl.uniform1f(P.step.u.uFeed, f)
       gl.uniform1f(P.step.u.uKill, k)
-      for (let i = 0; i < stepsPerFrame; i++) {
+      for (let i = 0; i < steps; i++) {
         gl.uniform1i(P.step.u.uState, state.read.bind(0))
         sim.draw(state.write); state.swap()
       }

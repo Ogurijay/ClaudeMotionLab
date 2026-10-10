@@ -16,9 +16,24 @@ export default function KineticType({ text = 'MAKE IT MOVE', radius = 340, minWe
     const st = letters.map(() => ({ x: 0, y: 0, vx: 0, vy: 0, w: minWeight, s: 0 }))
     const ptr = { x: -9999, y: -9999, px: -9999, vx: 0, inside: false }
 
+    // letter centres relative to the wrapper, measured only on resize / font load —
+    // reading layout inside the animation loop would force a synchronous reflow every frame
+    let centers = []
+    const measure = () => {
+      centers = letters.map(el => [el.offsetLeft + el.offsetWidth / 2, el.offsetTop + el.offsetHeight / 2])
+    }
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(wrap)
+    document.fonts?.ready.then(measure)
+    let base = wrap.getBoundingClientRect()
+    const onScroll = () => { base = null }
+    window.addEventListener('scroll', onScroll, { passive: true })
+
     const onMove = e => {
-      ptr.x = e.clientX
-      ptr.y = e.clientY
+      base ??= wrap.getBoundingClientRect()
+      ptr.x = e.clientX - base.left
+      ptr.y = e.clientY - base.top
       ptr.inside = true
     }
     const onLeave = () => { ptr.inside = false }
@@ -33,13 +48,6 @@ export default function KineticType({ text = 'MAKE IT MOVE', radius = 340, minWe
       const t = (performance.now() - t0) / 1000
       ptr.vx += ((ptr.x - (ptr.px === -9999 ? ptr.x : ptr.px)) - ptr.vx) * 0.2
       ptr.px = ptr.x
-
-      // read layout first (offset* ignore transforms), then write
-      const base = wrap.getBoundingClientRect()
-      const centers = letters.map(el => [
-        base.left + el.offsetLeft + el.offsetWidth / 2,
-        base.top + el.offsetTop + el.offsetHeight / 2,
-      ])
 
       letters.forEach((el, i) => {
         const s = st[i]
@@ -74,6 +82,8 @@ export default function KineticType({ text = 'MAKE IT MOVE', radius = 340, minWe
     tick()
     return () => {
       cancelAnimationFrame(raf)
+      ro.disconnect()
+      window.removeEventListener('scroll', onScroll)
       wrap.removeEventListener('pointermove', onMove)
       wrap.removeEventListener('pointerleave', onLeave)
     }

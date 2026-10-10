@@ -13,7 +13,7 @@ html, body {
   margin: 0;
   background: var(--bg);
   color: var(--fg);
-  font-family: Inter, system-ui, sans-serif;
+  font-family: "Inter Variable", Inter, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -97,6 +97,8 @@ html, body {
   position: relative;
   height: 78vh;
   min-height: 520px;
+  /* isolate each stage: per-frame DOM changes inside it never re-layout or repaint the long page */
+  contain: strict;
   border: 1px solid var(--line);
   border-radius: 28px;
   overflow: hidden;
@@ -131,7 +133,7 @@ html, body {
   display: inline-block;
   will-change: transform, font-variation-settings;
   color: color-mix(in oklab, #ececf3, #ff4fd8 calc(var(--glow) * 100%));
-  text-shadow: 0 0 calc(var(--glow) * 40px) rgb(124 92 255 / calc(var(--glow) * 0.9));
+  text-shadow: 0 0 calc(var(--glow) * 22px) rgb(124 92 255 / calc(var(--glow) * 0.9));
 }
 
 /* spiral gallery */
@@ -158,7 +160,7 @@ html, body {
   pointer-events: none;
   z-index: 1;
 }
-.spiral__word { font-family: Inter, sans-serif; font-size: 56px; font-weight: 800; letter-spacing: -0.04em; color: var(--fg); }
+.spiral__word { font-family: "Inter Variable", Inter, sans-serif; font-size: 56px; font-weight: 800; letter-spacing: -0.04em; color: var(--fg); }
 
 .foot {
   padding: 12vh 6vw;

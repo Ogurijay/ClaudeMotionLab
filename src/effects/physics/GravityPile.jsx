@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useVisibility } from '../../hooks/useVisibility'
+import { targetDpr } from '../../lib/perf'
 
 const TAGS = ['React', 'Three.js', 'GLSL', 'WebGL2', 'Canvas', 'Verlet', 'Springs', 'Shaders', 'Particles',
   'Physics', 'Motion', 'Noise', 'SDF', 'Fluids', 'Cloth', 'Jelly', 'Pixels', 'Light', 'Ink', 'Paper']
@@ -20,7 +21,7 @@ export default function GravityPile({ tags = TAGS, gravity = 0.45 }) {
     const ctx = canvas.getContext('2d')
     let W = 0, H = 0, dpr = 1, bodies = [], spawnQueue = [], lastSpawn = 0
     const labels = tagsKey.split('|')
-    const font = '600 17px Inter, system-ui, sans-serif'
+    const font = '600 17px "Inter Variable", Inter, system-ui, sans-serif'
 
     // a body is 4 corner particles (x, y, px, py) plus 6 rest lengths (4 edges, 2 diagonals)
     const makeBody = (label, i) => {
@@ -40,7 +41,7 @@ export default function GravityPile({ tags = TAGS, gravity = 0.45 }) {
       spawnQueue = labels.map((l, i) => () => makeBody(l, i))
     }
     const resize = () => {
-      dpr = Math.min(window.devicePixelRatio, 2)
+      dpr = targetDpr(1.5)
       const r = canvas.getBoundingClientRect()
       W = r.width; H = r.height
       canvas.width = W * dpr; canvas.height = H * dpr

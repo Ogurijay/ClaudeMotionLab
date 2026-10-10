@@ -56,6 +56,7 @@ export default function HoloScanner() {
   const start = useRef(-1)
   const canvasRef = useShaderCanvas({
     fragment: FRAG,
+    dprCap: 1.25,
     textures: { uContent: idCard },
     onFrame: ({ gl, uniform, time }) => {
       if (start.current < 0) start.current = time

@@ -29,7 +29,8 @@ Each chapter opens with its own transition — RGB interference, a dissolving pi
 - **`glsim`** — tiny WebGL2 toolkit for multi-pass GPU simulations (fluids, reaction–diffusion)
 - **Registry-driven page** — chapters, demos and "coming soon" cards are generated from one file
 - **Source viewer** — props parsed straight from each component's signature, highlighted source, copy button
-- Touch-friendly scrolling, lighter workloads on small screens, `prefers-reduced-motion` support
+- **Performance governor** — quality switch (auto / high / power-saving), adaptive render resolution driven by frame time, background shader compilation, prioritised one-at-a-time mounting, layout containment per stage
+- Self-hosted fonts (no external CDN), touch-friendly scrolling, lighter workloads on small screens, `prefers-reduced-motion` support
 
 ## Getting started
 
@@ -41,6 +42,7 @@ npm run dev
 | Script | |
 |---|---|
 | `npm run dev` | dev server |
+| `npm run lint` | ESLint |
 | `npm run build` | production build to `dist/` |
 | `npm run preview` | preview the production build |
 
@@ -55,7 +57,7 @@ src/
 ├── effects/          reusable effect components, one folder per chapter
 │   ├── cyber/  pixel/  liquid/  organic/  paper/  glass/  physics/
 ├── hooks/            useShaderCanvas, useVisibility, useReducedMotion
-├── lib/              glsim (multi-pass GPU simulations), artwork (procedural image sources)
+├── lib/              perf (quality & adaptive resolution), glsim (multi-pass GPU simulations), artwork (procedural images)
 └── styles/           global + showcase styles
 docs/                 project documentation (Chinese)
 ```

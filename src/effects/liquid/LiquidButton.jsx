@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import './LiquidButton.css'
+import { targetDpr } from '../../lib/perf'
 
 const N = 36   // surface spring points
 
@@ -21,7 +22,7 @@ export default function LiquidButton({ label = 'Get started', color = '#38bdf8',
     let level = 0, target = 0, lastX = 0, raf = 0, running = false
 
     const resize = () => {
-      dpr = Math.min(window.devicePixelRatio, 2)
+      dpr = targetDpr(1.5)
       const r = btn.getBoundingClientRect()
       W = r.width; H = r.height
       canvas.width = W * dpr; canvas.height = H * dpr
@@ -53,11 +54,11 @@ export default function LiquidButton({ label = 'Get started', color = '#38bdf8',
     btn.addEventListener('pointermove', onMove)
     btn.addEventListener('pointerleave', onLeave)
 
-    function draw(now) {
+    function draw() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       ctx.clearRect(0, 0, W, H)
       const fontSize = Math.round(H * 0.36)
-      ctx.font = `600 ${fontSize}px Inter, system-ui, sans-serif`
+      ctx.font = `600 ${fontSize}px "Inter Variable", Inter, system-ui, sans-serif`
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
       ctx.fillStyle = color

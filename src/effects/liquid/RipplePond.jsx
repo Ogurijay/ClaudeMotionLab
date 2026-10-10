@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { createSim } from '../../lib/glsim'
 import { useVisibility } from '../../hooks/useVisibility'
+import { targetDpr } from '../../lib/perf'
 
 const HEAD = `#version 300 es
 precision highp float;
@@ -98,8 +99,8 @@ export default function RipplePond({ resolution = 0.5, damping = 0.988, rain = t
 
     const build = () => {
       const r = canvas.getBoundingClientRect()
-      canvas.width = Math.max(1, Math.round(r.width * Math.min(window.devicePixelRatio, 1.5)))
-      canvas.height = Math.max(1, Math.round(r.height * Math.min(window.devicePixelRatio, 1.5)))
+      canvas.width = Math.max(1, Math.round(r.width * targetDpr(1.25)))
+      canvas.height = Math.max(1, Math.round(r.height * targetDpr(1.25)))
       aspect = canvas.width / canvas.height
       state = sim.doubleTarget(Math.max(64, Math.round(r.width * resolution)), Math.max(64, Math.round(r.height * resolution)), gl.LINEAR, 'half')   // half floats are linearly filterable in core WebGL2
     }
@@ -133,7 +134,7 @@ export default function RipplePond({ resolution = 0.5, damping = 0.988, rain = t
     const t0 = performance.now()
     const loop = now => {
       raf = requestAnimationFrame(loop)
-      if (!visible.current) return
+      if (!visible.current || !sim.ready()) return
       const t = (now - t0) / 1000
       if (rain && t > nextRain) { drop(Math.random(), Math.random(), 0.012 + Math.random() * 0.015, 0.35); nextRain = t + 0.15 + Math.random() * 0.4 }
       if (ptr.inside && Math.hypot(ptr.x - ptr.lx, ptr.y - ptr.ly) > 0.01) { drop(ptr.x, ptr.y, 0.02, 0.25); ptr.lx = ptr.x; ptr.ly = ptr.y }

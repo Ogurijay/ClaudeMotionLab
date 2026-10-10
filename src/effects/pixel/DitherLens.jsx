@@ -115,9 +115,9 @@ export default function DitherLens({ palette = 'gameboy', pixelSize = 5, lensRad
     fragment: FRAG,
     speed,
     mouseEase: 0.18,
-    onFrame: ({ gl, uniform, mouse }) => {
+    onFrame: ({ gl, uniform, mouse, canvas }) => {
       lens.current += ((mouse.inside ? 1 : 0) - lens.current) * 0.12
-      gl.uniform1f(uniform('uPixel'), pixelSize * Math.min(window.devicePixelRatio, 1.5))
+      gl.uniform1f(uniform('uPixel'), pixelSize * (canvas.width / Math.max(1, canvas.clientWidth)))
       gl.uniform1f(uniform('uLens'), lens.current)
       gl.uniform1f(uniform('uLensR'), lensRadius)
       gl.uniform1i(uniform('uPalette'), paletteRef.current)

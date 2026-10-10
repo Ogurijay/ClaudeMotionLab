@@ -21,6 +21,12 @@
 6. **视口暂停**：持续动画的效果必须使用 `useVisibility`（或 `useShaderCanvas`，它已内置），不可见时跳过渲染。
 7. **effect 依赖稳定**：数组、对象类 props 先转成字符串 key（如 `colors.join('|')`）再放入依赖数组，避免每次渲染都重建场景。
 8. **组件顶部写 JSDoc 注释**：一句话说明效果和交互方式。
+9. **遵守性能约定**（详见 ARCHITECTURE「性能调节」）：
+   - 画布 DPR 一律走 `targetDpr(cap)`，WebGL 效果接入自适应分辨率（`useShaderCanvas` 已内置，Three.js 用 `adaptiveRenderer`）
+   - Three.js 效果首帧前 `renderer.compileAsync`；`glsim` 效果在 `sim.ready()` 之后再绘制
+   - 动画循环里不读布局（`getBoundingClientRect`、`offsetLeft` 等），需要时在尺寸变化或滚动时缓存
+   - 不在动画画布上方使用 `backdrop-filter`；能用 transform / opacity 的动画不用会触发重绘的属性
+   - DOM 动画在静止或离屏时停止 requestAnimationFrame
 
 ## 新增一个效果的步骤
 
@@ -47,7 +53,7 @@
 
 ## Git 与提交
 
-- 只使用 `main` 一个分支，直接在 `main` 上提交，不建功能分支；每次提交前确保 `npm run build` 通过，`main` 始终可运行
+- 只使用 `main` 一个分支，直接在 `main` 上提交，不建功能分支；每次提交前确保 `npm run lint` 与 `npm run build` 通过，`main` 始终可运行
 - 提交信息遵循 [Conventional Commits](https://www.conventionalcommits.org/)，`scope` 使用类别或模块名：
 
 ```
@@ -96,10 +102,10 @@ chore: bump three to 0.187
 
 一个效果标为 `done` 前，必须满足：
 
-- [ ] 符合上文「效果组件约定」的 8 条
+- [ ] 符合上文「效果组件约定」的 9 条
 - [ ] 在展示页中可交互，交互提示文案准确
 - [ ] 浏览器控制台无报错与警告
 - [ ] 滚出视口后不再消耗渲染资源；卸载后无残留监听或 GPU 资源
 - [ ] 窗口缩放时布局与画面正确自适应
-- [ ] `npm run build` 通过
+- [ ] `npm run lint` 与 `npm run build` 都通过
 - [ ] `EFFECTS.md`、`CHANGELOG.md` 已更新

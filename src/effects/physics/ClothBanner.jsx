@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { useVisibility } from '../../hooks/useVisibility'
+import { adaptiveRenderer } from '../../lib/perf'
 
 const NX = 34, NY = 24              // particles across / down
 const W = 3.6, H = 2.5              // banner size (world units)
@@ -20,7 +21,7 @@ function bannerTexture() {
     g.beginPath(); g.moveTo(x, h); g.lineTo(x + 45, h); g.lineTo(x + 135, h - 90); g.lineTo(x + 90, h - 90); g.fill()
   }
   g.fillStyle = '#fff1f2'
-  g.font = '900 200px Inter, "Arial Black", sans-serif'
+  g.font = '900 200px "Inter Variable", Inter, "Arial Black", sans-serif'
   g.textAlign = 'center'
   g.fillText('CLOTH', w / 2, h * 0.5)
   g.font = '600 38px "JetBrains Mono", monospace'
@@ -43,7 +44,7 @@ export default function ClothBanner({ wind = 1, iterations = 5 }) {
   useEffect(() => {
     const mount = mountRef.current
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    const perf = adaptiveRenderer(renderer, 1.5, () => resize())
     renderer.domElement.className = 'fx-canvas'
     renderer.domElement.style.cursor = 'grab'
     renderer.domElement.style.touchAction = 'none'   // dragging must not scroll the page
@@ -195,10 +196,15 @@ export default function ClothBanner({ wind = 1, iterations = 5 }) {
     ro.observe(mount)
 
     const t0 = performance.now()
+    // compile every material in the background before the first frame, so mounting
+    // this effect mid-scroll doesn't stall the main thread on shader compilation
+    let compiled = false
+    renderer.compileAsync(scene, camera).catch(() => {}).finally(() => { compiled = true })
     let raf
     const loop = () => {
       raf = requestAnimationFrame(loop)
-      if (!visible.current) return
+      if (!perf.frame(visible.current)) return
+      if (!compiled) return
       const t = (performance.now() - t0) / 1000
       step(t)
       P.array.set(pos)
@@ -210,6 +216,7 @@ export default function ClothBanner({ wind = 1, iterations = 5 }) {
 
     return () => {
       cancelAnimationFrame(raf)
+      perf.dispose()
       ro.disconnect()
       renderer.domElement.removeEventListener('pointerdown', onDown)
       renderer.domElement.removeEventListener('pointermove', onMove)

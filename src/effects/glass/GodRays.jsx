@@ -70,6 +70,7 @@ export default function GodRays({ text = 'LIGHT', density = 0.85 }) {
 
   const canvasRef = useShaderCanvas({
     fragment: FRAG,
+    dprCap: 1.0,
     mouseEase: 1,
     textures: {
       uOcc: (w, h) => {
@@ -82,7 +83,7 @@ export default function GodRays({ text = 'LIGHT', density = 0.85 }) {
         g.strokeStyle = '#fff'
         g.textAlign = 'center'
         g.textBaseline = 'middle'
-        g.font = `900 ${Math.min(h * 0.4, (w * 0.85) / (text.length * 0.7))}px Inter, "Arial Black", sans-serif`
+        g.font = `900 ${Math.min(h * 0.4, (w * 0.85) / (text.length * 0.7))}px "Inter Variable", Inter, "Arial Black", sans-serif`
         g.fillText(text, w / 2, h * 0.5)
         // a few rings and bars for extra light shafts
         g.lineWidth = h * 0.012

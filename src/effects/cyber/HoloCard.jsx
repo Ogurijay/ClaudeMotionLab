@@ -11,18 +11,20 @@ export default function HoloCard({ title, subtitle, number, hue = 260, emblem = 
   useEffect(() => {
     const el = ref.current
     const s = { x: 0.5, y: 0.5, a: 0, tx: 0.5, ty: 0.5, ta: 0, vx: 0, vy: 0 }
+    let raf = 0
+    const wake = () => { if (!raf) raf = requestAnimationFrame(tick) }
     const onMove = e => {
       const r = el.getBoundingClientRect()
       s.tx = (e.clientX - r.left) / r.width
       s.ty = (e.clientY - r.top) / r.height
       s.ta = 1
+      wake()
     }
-    const onLeave = () => { s.tx = 0.5; s.ty = 0.5; s.ta = 0 }
+    const onLeave = () => { s.tx = 0.5; s.ty = 0.5; s.ta = 0; wake() }
     el.addEventListener('pointermove', onMove)
     el.addEventListener('pointerleave', onLeave)
 
-    let raf
-    const tick = () => {
+    function tick() {
       // critically-damped-ish spring for a weighty, physical feel
       s.vx = (s.vx + (s.tx - s.x) * 0.08) * 0.78
       s.vy = (s.vy + (s.ty - s.y) * 0.08) * 0.78
@@ -32,9 +34,10 @@ export default function HoloCard({ title, subtitle, number, hue = 260, emblem = 
       el.style.setProperty('--mx', s.x.toFixed(4))
       el.style.setProperty('--my', s.y.toFixed(4))
       el.style.setProperty('--active', s.a.toFixed(4))
-      raf = requestAnimationFrame(tick)
+      // sleep once the spring has settled; pointer events wake it again
+      const moving = Math.abs(s.tx - s.x) + Math.abs(s.ty - s.y) + Math.abs(s.vx) + Math.abs(s.vy) + Math.abs(s.ta - s.a) > 0.0005
+      raf = moving ? requestAnimationFrame(tick) : 0
     }
-    tick()
     return () => {
       cancelAnimationFrame(raf)
       el.removeEventListener('pointermove', onMove)

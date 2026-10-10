@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useVisibility } from '../../hooks/useVisibility'
 import './Fireflies.css'
+import { targetDpr } from '../../lib/perf'
 
 // pre-rendered glow sprite
 function makeGlow(color) {
@@ -79,7 +80,7 @@ export default function Fireflies({ count = 180, coupling = 1.6, color = 'rgba(1
     })
 
     const resize = () => {
-      dpr = Math.min(window.devicePixelRatio, 2)
+      dpr = targetDpr(1.5)
       const r = canvas.getBoundingClientRect()
       W = r.width; H = r.height
       canvas.width = W * dpr; canvas.height = H * dpr

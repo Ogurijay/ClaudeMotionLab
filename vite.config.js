@@ -8,7 +8,7 @@ export default defineConfig({
   server: { watch: { usePolling: true, interval: 200 } },
   build: {
     // three.js (~700 kB minified) gets its own long-cached chunk; effects load lazily on demand
-    rolldownOptions: { output: { codeSplitting: { groups: [{ name: 'three', test: /node_modules[\/]three/ }] } } },
+    rolldownOptions: { output: { codeSplitting: { groups: [{ name: 'three', test: /node_modules[/\\]three/}] } } },
     chunkSizeWarningLimit: 800,
   },
 })

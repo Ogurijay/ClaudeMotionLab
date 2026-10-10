@@ -50,10 +50,10 @@ export default function PixelDissolve({ block = 48 }) {
     fragment: FRAG,
     mouseEase: 0.25,
     textures: { uImage: landscape },
-    onFrame: ({ gl, uniform, mouse }) => {
+    onFrame: ({ gl, uniform, mouse, canvas }) => {
       reveal.current += ((mouse.inside ? 1 : 0) - reveal.current) * (mouse.inside ? 0.025 : 0.04)
       gl.uniform1f(uniform('uReveal'), reveal.current)
-      gl.uniform1f(uniform('uBlock'), block * Math.min(window.devicePixelRatio, 1.5))
+      gl.uniform1f(uniform('uBlock'), block * (canvas.width / Math.max(1, canvas.clientWidth)))
     },
   })
   return <canvas ref={canvasRef} className="fx-canvas" />

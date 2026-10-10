@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { useVisibility } from '../../hooks/useVisibility'
+import { adaptiveRenderer } from '../../lib/perf'
 
 const CW = 2.2, CH = 3.0          // card size (world units)
 const NX = 9, NY = 12             // simulation particles
@@ -19,7 +20,7 @@ function cardTexture(hue) {
   g.fillStyle = 'rgba(255,255,255,0.18)'
   for (let i = 0; i < 9; i++) { g.beginPath(); g.arc(w * Math.random(), h * Math.random(), 30 + Math.random() * 90, 0, Math.PI * 2); g.fill() }
   g.fillStyle = 'rgba(255,255,255,0.95)'
-  g.font = '900 150px Inter, "Arial Black", sans-serif'
+  g.font = '900 150px "Inter Variable", Inter, "Arial Black", sans-serif'
   g.fillText('JELLY', 50, h - 120)
   g.font = '500 30px "JetBrains Mono", monospace'
   g.fillText('PH-01 · SOFT BODY', 56, h - 60)
@@ -44,7 +45,7 @@ export default function JellyCard({ stiffness = 0.07, damping = 0.9, hue = 330 }
   useEffect(() => {
     const mount = mountRef.current
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    const perf = adaptiveRenderer(renderer, 1.5, () => resize())
     renderer.domElement.className = 'fx-canvas'
     renderer.domElement.style.cursor = 'grab'
     renderer.domElement.style.touchAction = 'none'   // dragging must not scroll the page
@@ -70,7 +71,7 @@ export default function JellyCard({ stiffness = 0.07, damping = 0.9, hue = 330 }
 
     const geo = new THREE.PlaneGeometry(CW, CH, MX - 1, MY - 1)
     const tex = cardTexture(hue)
-    const mat = new THREE.MeshPhysicalMaterial({ map: tex, roughness: 0.25, clearcoat: 1, clearcoatRoughness: 0.15, side: THREE.DoubleSide })
+    const mat = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.28, metalness: 0.05, side: THREE.DoubleSide })
     const mesh = new THREE.Mesh(geo, mat)
     scene.add(mesh)
 
@@ -188,10 +189,15 @@ export default function JellyCard({ stiffness = 0.07, damping = 0.9, hue = 330 }
     ro.observe(mount)
 
     const t0 = performance.now()
+    // compile every material in the background before the first frame, so mounting
+    // this effect mid-scroll doesn't stall the main thread on shader compilation
+    let compiled = false
+    renderer.compileAsync(scene, camera).catch(() => {}).finally(() => { compiled = true })
     let raf
     const loop = () => {
       raf = requestAnimationFrame(loop)
-      if (!visible.current) return
+      if (!perf.frame(visible.current)) return
+      if (!compiled) return
       const t = (performance.now() - t0) / 1000
       step(t)
       step(t)
@@ -202,6 +208,7 @@ export default function JellyCard({ stiffness = 0.07, damping = 0.9, hue = 330 }
 
     return () => {
       cancelAnimationFrame(raf)
+      perf.dispose()
       ro.disconnect()
       renderer.domElement.removeEventListener('pointerdown', onDown)
       renderer.domElement.removeEventListener('pointermove', onMove)

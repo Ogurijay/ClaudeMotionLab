@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useVisibility } from '../../hooks/useVisibility'
 import './MagnetDots.css'
+import { targetDpr } from '../../lib/perf'
 
 /**
  * A field of iron filings that align with the magnetic field of the poles:
@@ -21,7 +22,7 @@ export default function MagnetDots({ spacing = 22, maxPoles = 4 }) {
     const ptr = { x: 0, y: 0, inside: false }
 
     const resize = () => {
-      dpr = Math.min(window.devicePixelRatio, 2)
+      dpr = targetDpr(1.5)
       const r = canvas.getBoundingClientRect()
       W = r.width; H = r.height
       canvas.width = W * dpr; canvas.height = H * dpr

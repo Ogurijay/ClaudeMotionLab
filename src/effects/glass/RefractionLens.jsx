@@ -79,7 +79,7 @@ function poster(w, h) {
   g.fillStyle = '#111'
   g.textBaseline = 'alphabetic'
   const big = Math.min(h * 0.27, w * 0.16)
-  g.font = `900 ${big}px Inter, "Arial Black", sans-serif`
+  g.font = `900 ${big}px "Inter Variable", Inter, "Arial Black", sans-serif`
   g.fillText('LIQUID', w * 0.06, h * 0.42)
   g.fillText('GLASS', w * 0.06, h * 0.72)
   g.font = `500 ${Math.max(11, h * 0.022)}px "JetBrains Mono", monospace`
@@ -101,6 +101,7 @@ export default function RefractionLens({ shape = 'pill', size = 0.16 }) {
 
   const canvasRef = useShaderCanvas({
     fragment: FRAG,
+    dprCap: 1.25,
     mouseEase: 1,
     textures: { uBg: poster },
     onFrame: ({ gl, uniform, mouse }) => {

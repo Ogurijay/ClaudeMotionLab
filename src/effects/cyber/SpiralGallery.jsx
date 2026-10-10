@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
+import { adaptiveRenderer } from '../../lib/perf'
 
 const WORDS = ['Aurora', 'Prism', 'Velvet', 'Nebula', 'Quartz', 'Ember', 'Lumen', 'Halo', 'Drift', 'Vapor', 'Orbit', 'Flux',
   'Ion', 'Echo', 'Nova', 'Sable', 'Tide', 'Zenith', 'Mirage', 'Pulse', 'Glyph', 'Opal', 'Strata', 'Kinetic']
 
 // procedural card art — no image assets needed
 function makeCardTexture(i, word) {
-  const w = 512, h = 672
+  const w = 384, h = 504
   const c = document.createElement('canvas')
   c.width = w; c.height = h
   const g = c.getContext('2d')
@@ -17,29 +18,29 @@ function makeCardTexture(i, word) {
   g.fillStyle = bg
   g.fillRect(0, 0, w, h)
   for (let k = 0; k < 3; k++) {
-    const rg = g.createRadialGradient(Math.random() * w, Math.random() * h, 0, Math.random() * w, Math.random() * h, 320)
+    const rg = g.createRadialGradient(Math.random() * w, Math.random() * h, 0, Math.random() * w, Math.random() * h, 240)
     rg.addColorStop(0, `hsla(${(hue + 140 + k * 40) % 360} 100% 70% / 0.55)`)
     rg.addColorStop(1, 'transparent')
     g.fillStyle = rg
     g.fillRect(0, 0, w, h)
   }
   g.strokeStyle = 'rgba(255,255,255,0.12)'
-  for (let x = 0; x < w; x += 32) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x, h); g.stroke() }
-  for (let y = 0; y < h; y += 32) { g.beginPath(); g.moveTo(0, y); g.lineTo(w, y); g.stroke() }
+  for (let x = 0; x < w; x += 24) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x, h); g.stroke() }
+  for (let y = 0; y < h; y += 24) { g.beginPath(); g.moveTo(0, y); g.lineTo(w, y); g.stroke() }
   g.fillStyle = 'rgba(255,255,255,0.95)'
-  g.font = '800 92px Inter, Arial, sans-serif'
-  g.fillText(word, 36, h - 64)
-  g.font = '500 22px "JetBrains Mono", monospace'
+  g.font = '800 69px "Inter Variable", Inter, Arial, sans-serif'
+  g.fillText(word, 27, h - 48)
+  g.font = '500 17px "JetBrains Mono", monospace'
   g.fillStyle = 'rgba(255,255,255,0.75)'
-  g.fillText(`№ ${String(i + 1).padStart(2, '0')} — MOTION LAB`, 38, 58)
+  g.fillText(`№ ${String(i + 1).padStart(2, '0')} — MOTION LAB`, 28, 44)
   g.beginPath()
-  g.arc(w - 80, 80, 26, 0, Math.PI * 2)
+  g.arc(w - 60, 60, 20, 0, Math.PI * 2)
   g.strokeStyle = 'rgba(255,255,255,0.8)'
   g.lineWidth = 3
   g.stroke()
   const tex = new THREE.CanvasTexture(c)
   tex.colorSpace = THREE.SRGBColorSpace
-  tex.anisotropy = 8
+  tex.anisotropy = 4
   return tex
 }
 
@@ -93,10 +94,10 @@ export default function SpiralGallery({ count = 24, spacing = 1.7, radius = 2.7 
     let disposed = false
     let cleanup = () => {}
 
-    document.fonts.load('800 92px Inter').finally(() => {
+    document.fonts.load('800 69px "Inter Variable"').finally(() => {
       if (disposed) return
       const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+      const perf = adaptiveRenderer(renderer, 1.5, () => resize())
       renderer.domElement.className = 'fx-canvas'
       mount.appendChild(renderer.domElement)
 
@@ -122,6 +123,11 @@ export default function SpiralGallery({ count = 24, spacing = 1.7, radius = 2.7 
         mesh.lookAt(0, 0, z + 3.2)   // face the axis, angled toward the oncoming camera
         scene.add(mesh)
       }
+
+      // visibility via IntersectionObserver rather than reading layout every frame
+      const onScreen = { current: false }
+      const io = new IntersectionObserver(([e]) => { onScreen.current = e.isIntersecting }, { rootMargin: '100px' })
+      io.observe(track)
 
       const pathLen = (count - 1) * spacing
       let progress = 0, smooth = 0, vel = 0, lastSmooth = 0
@@ -149,11 +155,19 @@ export default function SpiralGallery({ count = 24, spacing = 1.7, radius = 2.7 
       ro.observe(mount)
       window.addEventListener('scroll', readScroll, { passive: true })
 
+      // compile every material in the background before the first frame, so mounting
+
+      // this effect mid-scroll doesn't stall the main thread on shader compilation
+
+      let compiled = false
+
+      renderer.compileAsync(scene, camera).catch(() => {}).finally(() => { compiled = true })
+
       let raf, lastActive = -1
       const loop = () => {
         raf = requestAnimationFrame(loop)
-        const r = track.getBoundingClientRect()
-        if (r.bottom < -100 || r.top > window.innerHeight + 100) return
+        if (!perf.frame(onScreen.current)) return
+        if (!compiled) return
         smooth += (progress - smooth) * 0.07
         const dv = (smooth - lastSmooth) * 60
         lastSmooth = smooth
@@ -175,6 +189,8 @@ export default function SpiralGallery({ count = 24, spacing = 1.7, radius = 2.7 
 
       cleanup = () => {
         cancelAnimationFrame(raf)
+        io.disconnect()
+        perf.dispose()
         ro.disconnect()
         window.removeEventListener('scroll', readScroll)
         window.removeEventListener('pointermove', onMove)

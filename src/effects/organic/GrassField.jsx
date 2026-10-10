@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { useVisibility } from '../../hooks/useVisibility'
+import { adaptiveRenderer } from '../../lib/perf'
 
 const VERT = /* glsl */ `
 attribute vec3 aOffset;
@@ -62,7 +63,7 @@ function bladeGeometry(segments = 4) {
   const pos = [], idx = []
   for (let i = 0; i <= segments; i++) {
     const t = i / segments
-    const w = 0.035 * (1 - t) + 0.002
+    const w = 0.045 * (1 - t) + 0.002
     const z = t * t * 0.12
     pos.push(-w, t, z, w, t, z)
   }
@@ -83,14 +84,14 @@ function bladeGeometry(segments = 4) {
  * A meadow of instanced grass blades swaying in travelling wind gusts.
  * The cursor walks through the field and flattens the blades around it.
  */
-export default function GrassField({ count = 60000, base = '#0f2a12', tip = '#a3d65c', fog = '#2a2f45' }) {
+export default function GrassField({ count = 36000, base = '#0f2a12', tip = '#a3d65c', fog = '#2a2f45' }) {
   const mountRef = useRef(null)
   const visible = useVisibility(mountRef)
 
   useEffect(() => {
     const mount = mountRef.current
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75))
+    const perf = adaptiveRenderer(renderer, 1.25, () => resize())
     renderer.domElement.className = 'fx-canvas'
     mount.appendChild(renderer.domElement)
 
@@ -156,10 +157,15 @@ export default function GrassField({ count = 60000, base = '#0f2a12', tip = '#a3
     ro.observe(mount)
 
     const t0 = performance.now()
+    // compile every material in the background before the first frame, so mounting
+    // this effect mid-scroll doesn't stall the main thread on shader compilation
+    let compiled = false
+    renderer.compileAsync(scene, camera).catch(() => {}).finally(() => { compiled = true })
     let raf
     const loop = () => {
       raf = requestAnimationFrame(loop)
-      if (!visible.current) return
+      if (!perf.frame(visible.current)) return
+      if (!compiled) return
       uniforms.uTime.value = (performance.now() - t0) / 1000
       camera.position.x += (camBase.x + ptr.x * 0.5 - camera.position.x) * 0.03
       camera.position.y += (camBase.y + ptr.y * 0.15 - camera.position.y) * 0.03
@@ -175,6 +181,7 @@ export default function GrassField({ count = 60000, base = '#0f2a12', tip = '#a3
 
     return () => {
       cancelAnimationFrame(raf)
+      perf.dispose()
       ro.disconnect()
       renderer.domElement.removeEventListener('pointermove', onMove)
       renderer.domElement.removeEventListener('pointerleave', onLeave)

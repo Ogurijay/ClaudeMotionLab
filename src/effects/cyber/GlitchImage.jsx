@@ -57,6 +57,7 @@ export default function GlitchImage({ title = 'GLITCH', idle = 0.12 }) {
 
   const canvasRef = useShaderCanvas({
     fragment: FRAG,
+    dprCap: 1.25,
     mouseEase: 1,
     textures: { uImage: (w, h) => neonPoster(w, h, title) },
     onFrame: ({ gl, uniform, mouse, time }) => {

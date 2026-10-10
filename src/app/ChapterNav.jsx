@@ -14,14 +14,18 @@ export default function ChapterNav() {
     }, { rootMargin: '-45% 0px -45% 0px' })
     els.forEach(el => io.observe(el))
 
-    const onScroll = () => {
+    let pending = 0
+    const update = () => {
+      pending = 0
       const max = document.documentElement.scrollHeight - window.innerHeight
-      setProgress(max > 0 ? window.scrollY / max : 0)
+      const p = max > 0 ? Math.round((window.scrollY / max) * 500) / 500 : 0
+      setProgress(prev => (prev === p ? prev : p))
       setShown(window.scrollY > window.innerHeight * 0.6)
     }
-    onScroll()
+    const onScroll = () => { if (!pending) pending = requestAnimationFrame(update) }
+    update()
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => { io.disconnect(); window.removeEventListener('scroll', onScroll) }
+    return () => { io.disconnect(); cancelAnimationFrame(pending); window.removeEventListener('scroll', onScroll) }
   }, [])
 
   const go = id => document.getElementById(`chapter-${id}`)?.scrollIntoView({ behavior: 'smooth' })

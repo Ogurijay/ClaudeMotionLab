@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { createSim } from '../../lib/glsim'
 import { useVisibility } from '../../hooks/useVisibility'
+import { targetDpr } from '../../lib/perf'
 
 // ---------- passes (stable fluids on a staggered-free grid) ----------
 
@@ -142,7 +143,7 @@ export default function InkFluid({ simResolution = 128, dyeResolution = 640, cur
     let vel, dye, divergence, curlT, pressure, aspect = 1
     const build = () => {
       const r = canvas.getBoundingClientRect()
-      const dpr = Math.min(window.devicePixelRatio, 1.25)
+      const dpr = targetDpr(1.25)
       canvas.width = Math.max(1, (r.width * dpr) | 0)
       canvas.height = Math.max(1, (r.height * dpr) | 0)
       aspect = canvas.width / canvas.height
@@ -177,7 +178,7 @@ export default function InkFluid({ simResolution = 128, dyeResolution = 640, cur
         splat(0.2 + Math.random() * 0.6, 0.2 + Math.random() * 0.6, Math.cos(a) * 900, Math.sin(a) * 900, nextColor(0.8), 0.003)
       }
     }
-    burst(6)
+    let started = false
 
     const ptr = { x: 0, y: 0, px: 0, py: 0, moved: false, inside: false }
     const onMove = e => {
@@ -194,8 +195,8 @@ export default function InkFluid({ simResolution = 128, dyeResolution = 640, cur
     // rebuild only on real size changes (the observer also fires once on observe)
     const ro = new ResizeObserver(() => {
       const r = canvas.getBoundingClientRect()
-      const dpr = Math.min(window.devicePixelRatio, 1.25)
-      if (Math.abs(r.width * dpr - canvas.width) > 2 || Math.abs(r.height * dpr - canvas.height) > 2) { build(); burst(4) }
+      const dpr = targetDpr(1.25)
+      if (Math.abs(r.width * dpr - canvas.width) > 2 || Math.abs(r.height * dpr - canvas.height) > 2) { build(); started = false }
     })
     ro.observe(canvas)
 
@@ -255,7 +256,8 @@ export default function InkFluid({ simResolution = 128, dyeResolution = 640, cur
     let raf, last = performance.now(), idle = 0
     const loop = now => {
       raf = requestAnimationFrame(loop)
-      if (!visible.current) { last = now; return }
+      if (!visible.current || !sim.ready()) { last = now; return }
+      if (!started) { started = true; burst(6) }
       const dt = Math.min((now - last) / 1000, 1 / 30)
       last = now
       if (ptr.moved && ptr.inside) {
