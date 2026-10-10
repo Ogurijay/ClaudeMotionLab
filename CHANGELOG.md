@@ -5,6 +5,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-10-10
+
+### Added
+- **Physics chapter** flagship effects:
+  - `JellyCard` (PH-01): soft-body card simulated with 2D shape matching and a gaussian soft grab; it stretches, wobbles and springs back home, rendered as a glossy bilinear-interpolated mesh
+  - `ClothBanner` (PH-02): Verlet cloth banner on a rod with structural, shear and bending constraints and gusty aerodynamic wind; hover blows on it, drag pulls the fabric
+  - `MagnetDots` (PH-03): iron filings aligning with a multi-pole magnetic field; the cursor is a north pole, clicks drop alternating south/north poles
+- Physics chapter intro transition: blocks fall, bounce and settle
+- All 24 flagship effects across the 7 chapters are now live
+
 ## [0.7.0] - 2026-10-10
 
 ### Added
@@ -84,7 +94,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Long-scroll showcase page
 - PolyForm Noncommercial 1.0.0 license
 
-[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.8.0...HEAD
+[0.8.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.4.0...v0.5.0

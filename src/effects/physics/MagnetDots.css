@@ -1,0 +1,22 @@
+.magnet { position: absolute; inset: 0; cursor: crosshair; }
+.magnet__hud {
+  position: absolute;
+  left: 18px;
+  top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: rgb(255 255 255 / 0.6);
+}
+.magnet__hud button {
+  padding: 5px 11px;
+  border: 1px solid rgb(251 113 133 / 0.4);
+  border-radius: 999px;
+  background: rgb(251 113 133 / 0.1);
+  color: #fecdd3;
+  font: inherit;
+  cursor: pointer;
+}
