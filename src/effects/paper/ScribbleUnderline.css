@@ -1,0 +1,4 @@
+.scrib { position: relative; display: inline-block; cursor: default; }
+.scrib__text { position: relative; z-index: 1; }
+.scrib__svg { position: absolute; left: -20px; top: -20px; overflow: visible; pointer-events: none; z-index: 2; }
+.scrib--highlight .scrib__svg { z-index: 0; mix-blend-mode: multiply; }

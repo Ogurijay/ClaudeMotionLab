@@ -157,3 +157,5 @@ return <canvas ref={canvasRef} className="fx-canvas" />
 ```
 
 hook 负责上下文与程序创建、全屏三角形、DPR 上限、尺寸自适应、平滑鼠标、视口暂停、减少动效降级，以及卸载时释放上下文。着色器中声明了 `uRes`、`uTime`、`uMouse` 时会自动赋值。
+
+需要把文字或图案传给着色器时，用 `textures` 选项：`{ uText: (w, h) => canvas }`。函数在启动和每次尺寸变化时以画布像素尺寸调用，结果作为带 mipmap 的纹理上传（InkBleed 就利用 mip 层级来模拟墨水扩散）。

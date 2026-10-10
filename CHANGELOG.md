@@ -5,6 +5,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-10-10
+
+### Added
+- **Paper chapter** flagship effects:
+  - `PageCurl` (PP-01): drag a magazine page corner and it wraps around a cylinder, tracking the cursor exactly; release past the spine to turn the page (mirrored show-through on the back, shadow on the next page)
+  - `InkBleed` (PP-04): calligraphy soaking into xuan paper — strokes grow from their spines through blurred mip levels, feather along paper fibres and pool at the wet edge; click to re-ink
+  - `ScribbleUnderline` (PP-05): hand-drawn underline / circle / highlight / strike / box annotations that draw themselves stroke by stroke and re-scribble on hover
+- Paper chapter intro transition: paper strips fold away like an unfolding sheet
+- `useShaderCanvas` accepts `textures`: sampler uniforms drawn by a function at canvas resolution, uploaded with mipmaps
+
 ## [0.5.0] - 2026-10-10
 
 ### Added
@@ -64,7 +74,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Long-scroll showcase page
 - PolyForm Noncommercial 1.0.0 license
 
-[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.2.0...v0.3.0

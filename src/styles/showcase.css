@@ -268,3 +268,18 @@
   pointer-events: none;
   z-index: 2;
 }
+.tx-paper {
+  position: absolute;
+  inset: -24px 0;
+  display: flex;
+  perspective: 1400px;
+  pointer-events: none;
+  z-index: 2;
+}
+.tx-paper span {
+  flex: 1;
+  transform-origin: left center;
+  box-shadow: inset -12px 0 18px -14px rgb(0 0 0 / 0.35);
+  transition: transform 0.75s cubic-bezier(0.6, 0, 0.25, 1), opacity 0.3s 0.5s;
+}
+.tx-paper.is-open span { transform: rotateY(-95deg); opacity: 0; }

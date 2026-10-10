@@ -11,4 +11,19 @@ export const demos = {
     </div>
   ),
   'CY-04': KineticType => <div className="kt-stage"><KineticType text="MAKE IT MOVE" /></div>,
+  'PP-05': Scribble => (
+    <div className="scrib-demo">
+      <p>
+        Every <Scribble variant="circle" color="#e11d48">sketch</Scribble> starts as a{' '}
+        <Scribble variant="underline" color="#2563eb">messy</Scribble> idea — it gets{' '}
+        <Scribble variant="highlight" color="#facc15">circled</Scribble>,{' '}
+        <Scribble variant="strike" color="#111827">crossed out</Scribble>, and finally{' '}
+        <Scribble variant="box" color="#16a34a">shipped</Scribble>.
+      </p>
+      <p className="scrib-demo__cn">
+        <Scribble variant="underline" color="#e11d48">手写</Scribble>的批注，让界面多一点
+        <Scribble variant="circle" color="#2563eb">温度</Scribble>。
+      </p>
+    </div>
+  ),
 }

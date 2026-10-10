@@ -117,16 +117,22 @@ export const effects = [
     desc: '极光丝带 + 星空，随滚动缓慢流动', tags: ['shader'] },
 
   // ── PP · Paper ──────────────────────────────────────────────
-  { id: 'PP-01', category: 'paper', name: 'PageCurl', status: 'planned', wave: 1,
-    desc: '可拖拽翻页的卷曲卡片，背面带阴影与纸张纹理', tags: ['three'] },
+  { id: 'PP-01', category: 'paper', name: 'PageCurl', status: 'done', wave: 1, webgl: true,
+    desc: '可拖拽翻页的卷曲杂志页，书角精确跟随鼠标，背面透出反向字迹',
+    tags: ['Three.js', 'cylinder curl', 'GLSL'], hint: '按住书页右侧向左拖动 —— 拖过中线松手即可翻页',
+    load: () => import('../effects/paper/PageCurl.jsx'), files: ['paper/PageCurl.jsx'] },
   { id: 'PP-02', category: 'paper', name: 'OrigamiFold', status: 'planned', wave: 2,
     desc: '内容像折纸一样分段折叠 / 展开', tags: ['dom'] },
   { id: 'PP-03', category: 'paper', name: 'TornReveal', status: 'planned', wave: 2,
     desc: '撕纸效果，撕开顶层露出下层内容，撕边不规则', tags: ['canvas'] },
-  { id: 'PP-04', category: 'paper', name: 'InkBleed', status: 'planned', wave: 1,
-    desc: '文字像墨水滴在宣纸上晕开显现', tags: ['shader'] },
-  { id: 'PP-05', category: 'paper', name: 'ScribbleUnderline', status: 'planned', wave: 1,
-    desc: '手绘笔触下划线、圈注、箭头，一笔一画绘出', tags: ['dom'] },
+  { id: 'PP-04', category: 'paper', name: 'InkBleed', status: 'done', wave: 1, webgl: true,
+    desc: '文字像墨水滴在宣纸上晕开显现',
+    tags: ['GLSL', 'mipmap bleed', 'useShaderCanvas'], hint: '看墨迹沿纸纤维晕开 · 点击重新落墨',
+    load: () => import('../effects/paper/InkBleed.jsx'), files: ['paper/InkBleed.jsx', '../hooks/useShaderCanvas.js'] },
+  { id: 'PP-05', category: 'paper', name: 'ScribbleUnderline', status: 'done', wave: 1,
+    desc: '手绘笔触下划线、圈注、荧光笔、删除线、方框，一笔一画绘出',
+    tags: ['SVG', 'stroke-dashoffset', 'seeded jitter'], hint: '把鼠标移到批注上 —— 每次都会换一只「手」重新画',
+    load: () => import('../effects/paper/ScribbleUnderline.jsx'), files: ['paper/ScribbleUnderline.jsx', 'paper/ScribbleUnderline.css'] },
 
   // ── GL · Glass & Light ──────────────────────────────────────
   { id: 'GL-01', category: 'glass', name: 'RefractionLens', status: 'planned', wave: 1,

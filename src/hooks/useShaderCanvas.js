@@ -21,6 +21,9 @@ void main() { gl_Position = vec4(aPos, 0.0, 1.0); }`
  * @param {number}   [opts.mouseEase=0.06] pointer smoothing (0..1, 1 = no smoothing)
  * @param {Function} [opts.onFrame]       (ctx) => void, set custom uniforms each frame
  * @param {Function} [opts.onPointerDown] (ctx, uv) => void
+ * @param {Record<string, (w: number, h: number) => TexImageSource>} [opts.textures]
+ *        sampler uniforms drawn by a function (e.g. text on a 2D canvas); called with the
+ *        canvas pixel size on start and on every resize, uploaded with mipmaps
  * @param {Array}    [deps=[]]            rebuild the program when these change
  * @returns {React.RefObject<HTMLCanvasElement>} attach to a <canvas>
  */
@@ -65,6 +68,26 @@ export function useShaderCanvas(opts, deps = []) {
       return locs.get(name)
     }
 
+    // optional textures, regenerated at canvas resolution on every resize
+    const texNames = Object.keys(optsRef.current.textures ?? {})
+    const texs = texNames.map(() => gl.createTexture())
+    const uploadTextures = () => {
+      const fns = optsRef.current.textures
+      if (!fns) return
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true)
+      texNames.forEach((name, i) => {
+        gl.activeTexture(gl.TEXTURE0 + i)
+        gl.bindTexture(gl.TEXTURE_2D, texs[i])
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, fns[name](canvas.width, canvas.height))
+        gl.generateMipmap(gl.TEXTURE_2D)
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR)
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+        gl.uniform1i(uniform(name), i)
+      })
+    }
+
     const timeScale = reduced ? 0.15 : 1
     const ctx = {
       gl, program, canvas, uniform,
@@ -78,6 +101,7 @@ export function useShaderCanvas(opts, deps = []) {
       canvas.width = Math.max(1, (r.width * dpr) | 0)
       canvas.height = Math.max(1, (r.height * dpr) | 0)
       gl.viewport(0, 0, canvas.width, canvas.height)
+      uploadTextures()
     }
     resize()
     const ro = new ResizeObserver(resize)
@@ -120,6 +144,7 @@ export function useShaderCanvas(opts, deps = []) {
       ro.disconnect()
       window.removeEventListener('pointermove', onMove)
       canvas.removeEventListener('pointerdown', onDown)
+      texs.forEach(t => gl.deleteTexture(t))
       gl.deleteBuffer(buffer)
       gl.deleteProgram(program)
       gl.deleteShader(vs)
