@@ -5,6 +5,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-10
+
 ### Added
 - Registry-driven showcase page: all 7 chapters and 38 effects generated from `src/app/registry.js`; unfinished effects appear as "coming soon" cards
 - `LazyMount`: effects mount near the viewport and unmount when far away (peak 3 live WebGL contexts on a full scroll, budget 6)
@@ -28,5 +30,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Long-scroll showcase page
 - PolyForm Noncommercial 1.0.0 license
 
-[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/Ogurijay/ClaudeMotionLab/releases/tag/v0.1.0
