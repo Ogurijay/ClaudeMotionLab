@@ -5,6 +5,20 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-10-10
+
+### Added
+- **Liquid chapter** completed:
+  - `RipplePond` (LQ-03): GPU wave-equation pool — ripples spread, interfere and reflect off the walls, refracting the tiled floor with caustics and sun glints; rain, cursor trails, click to drop a stone
+  - `BubbleField` (LQ-05): soap bubbles with thin-film interference colours that drift, sway, collide softly and shy away from the cursor; click to pop
+  - `LiquidButton` (LQ-06): buttons that fill with sloshing liquid on hover (spring-chain surface, splash at the entry point, tilt with movement), label inverts under the liquid
+- **Organic chapter** completed:
+  - `GrowingVines` (OR-04): vines climb from the edges, curl, branch, unfurl leaves and bloom; click to plant, the garden regrows
+  - `AuroraSky` (OR-05): aurora curtains over a mountain lake with stars and a rippled reflection, drifting with page scroll
+
+### Fixed
+- `RipplePond` uses half-float targets: 32-bit float textures are not linearly filterable without `OES_texture_float_linear`
+
 ## [1.1.0] - 2026-10-10
 
 ### Added
@@ -124,7 +138,8 @@ First stable release: all seven chapters have their flagship effects, the page i
 - Long-scroll showcase page
 - PolyForm Noncommercial 1.0.0 license
 
-[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.8.0...v1.0.0
 [0.8.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.7.0...v0.8.0

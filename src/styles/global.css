@@ -183,3 +183,17 @@ html, body {
 }
 .scrib-demo p { margin: 0 0 0.6em; }
 .scrib-demo__cn { font-size: 0.8em; color: #3b342b; }
+
+/* liquid button demo */
+.lbtn-demo {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  gap: 28px;
+  padding: 24px;
+  background: radial-gradient(ellipse at 50% 60%, #0d1b2a, #06080c 70%);
+}

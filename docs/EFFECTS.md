@@ -36,12 +36,12 @@
 |---|---|---|---|---|---|
 | `CY` | Cyber 赛博霓虹 | 霓虹、金属、全息、暗色高对比 | 8 | 6 | 8 |
 | `PX` | Pixel 像素 / 8-bit | 低分辨率、抖动、复古屏幕、像素物理 | 6 | 3 | 6 |
-| `LQ` | Liquid 水滴 / 流体 | 折射、流动、融合、表面张力 | 6 | 3 | 3 |
-| `OR` | Organic 自然 / 有机 | 生长、群体、风、自然纹理 | 5 | 3 | 3 |
+| `LQ` | Liquid 水滴 / 流体 | 折射、流动、融合、表面张力 | 6 | 3 | 6 |
+| `OR` | Organic 自然 / 有机 | 生长、群体、风、自然纹理 | 5 | 3 | 5 |
 | `PP` | Paper 纸张 / 手作 | 纸张质感、折叠、墨水、手绘笔触 | 5 | 3 | 3 |
 | `GL` | Glass & Light 玻璃 / 光影 | 折射、色散、体积光、明暗 | 4 | 3 | 3 |
 | `PH` | Physics 弹性 / 物理 | 软体、布料、磁力、重力 | 4 | 3 | 3 |
-| | **合计** | | **38** | **24** | **29** |
+| | **合计** | | **38** | **24** | **34** |
 
 ---
 
@@ -81,10 +81,10 @@
 |---|---|---|---|---|---|---|
 | LQ-01 | `RainGlass` | 雨滴落在玻璃上折射背景，水珠滑落、合并并留下水痕 | 鼠标擦出清晰区域 | `shader` | 1 | `done` |
 | LQ-02 | `InkFluid` | GPU Navier–Stokes 流体，鼠标搅动出墨水 / 烟雾 | 拖动 | `sim` | 1 | `done` |
-| LQ-03 | `RipplePond` | 水面高度场涟漪 + 池底焦散光斑 | 点击滴水 | `sim` | 2 | `planned` |
+| LQ-03 | `RipplePond` | 水面高度场涟漪 + 池底焦散光斑 | 点击滴水 | `sim` | 2 | `done` |
 | LQ-04 | `GooeyMenu` | 元球融合的液态菜单，按钮像水银一样分离、融合 | 点击展开 / 收起 | `dom`（SVG 滤镜） | 1 | `done` |
-| LQ-05 | `BubbleField` | 肥皂泡薄膜干涉彩虹，漂浮、碰撞，可戳破 | 点击戳破 | `three` | 2 | `planned` |
-| LQ-06 | `LiquidButton` | 悬停时液面晃动着注满按钮，离开时退潮 | 悬停 | `canvas` | 2 | `planned` |
+| LQ-05 | `BubbleField` | 肥皂泡薄膜干涉彩虹，漂浮、碰撞，可戳破 | 点击戳破 | `three` | 2 | `done` |
+| LQ-06 | `LiquidButton` | 悬停时液面晃动着注满按钮，离开时退潮 | 悬停 | `canvas` | 2 | `done` |
 
 ## OR · Organic 自然 / 有机
 
@@ -95,8 +95,8 @@
 | OR-01 | `GrassField` | 上万根草随风摆动（实例化渲染），鼠标划过时被压弯 | 鼠标划过 | `three` | 1 | `done` |
 | OR-02 | `Fireflies` | 萤火虫群体行为（Boids），明灭闪烁，跟随或躲避鼠标 | 鼠标 / 点击切换模式 | `three` | 1 | `done` |
 | OR-03 | `ReactionDiffusion` | Gray–Scott 反应扩散，实时生长出豹纹 / 珊瑚 / 指纹图案 | 鼠标播种，切换预设 | `sim` | 1 | `done` |
-| OR-04 | `GrowingVines` | 藤蔓沿容器边缘生长、分叉、开花 | 进入视口生长 | `canvas` | 2 | `planned` |
-| OR-05 | `AuroraSky` | 极光丝带 + 星空，随滚动缓慢流动 | 页面滚动 | `shader` | 2 | `planned` |
+| OR-04 | `GrowingVines` | 藤蔓沿容器边缘生长、分叉、开花 | 进入视口生长 | `canvas` | 2 | `done` |
+| OR-05 | `AuroraSky` | 极光丝带 + 星空，随滚动缓慢流动 | 页面滚动 | `shader` | 2 | `done` |
 
 ## PP · Paper 纸张 / 手作
 

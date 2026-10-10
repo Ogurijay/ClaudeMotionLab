@@ -72,7 +72,7 @@ ClaudeMotionLab/
 |---|---|---|---|
 | `shader` | 原生 WebGL2 全屏三角形 + 片元着色器 | LiquidChrome | 1 个 WebGL 上下文 |
 | `three` | Three.js 场景 | ParticleMorph、SpiralGallery | 1 个 WebGL 上下文 |
-| `sim` | 多 pass 模拟（帧缓冲 ping-pong），基于 `lib/glsim.js` | InkFluid、ReactionDiffusion | 1 个 WebGL 上下文 |
+| `sim` | 多 pass 模拟（帧缓冲 ping-pong），基于 `lib/glsim.js` | InkFluid、ReactionDiffusion、RipplePond | 1 个 WebGL 上下文 |
 | `canvas` | Canvas 2D | WaveLines | 无 |
 | `dom` | DOM + CSS / SVG | HoloCard、KineticType | 无 |
 
@@ -89,7 +89,7 @@ ClaudeMotionLab/
 浏览器对同一页面的活跃 WebGL 上下文数量有上限（Chrome 约为 16 个），超出时会强制丢失最早创建的上下文。全部效果做完后，WebGL 效果会有 25 个以上，因此：
 
 - 由 `LazyMount` 控制挂载：进入视口 ±1 屏范围内挂载，超出 ±2 屏卸载（滞后区间用来避免边界抖动）
-- 目标：同时活跃的 WebGL 上下文 **不超过 6 个**（P1 实测：1440×900 视口滚动整页，峰值 3 个）
+- 目标：同时活跃的 WebGL 上下文 **不超过 6 个**（P8 实测：24 个效果上线后滚动整页，峰值 4 个）
 - 组件卸载时必须释放全部 GPU 资源（geometry、material、texture、renderer），并主动释放上下文：
   `useShaderCanvas` 调用 `WEBGL_lose_context`，Three.js 效果调用 `renderer.forceContextLoss()`
 

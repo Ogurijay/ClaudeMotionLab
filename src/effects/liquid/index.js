@@ -1,3 +1,6 @@
 export { default as RainGlass } from './RainGlass.jsx'
 export { default as InkFluid } from './InkFluid.jsx'
 export { default as GooeyMenu } from './GooeyMenu.jsx'
+export { default as RipplePond } from './RipplePond.jsx'
+export { default as BubbleField } from './BubbleField.jsx'
+export { default as LiquidButton } from './LiquidButton.jsx'

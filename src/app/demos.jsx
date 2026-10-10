@@ -16,6 +16,13 @@ export const demos = {
     </div>
   ),
   'CY-04': KineticType => <div className="kt-stage"><KineticType text="MAKE IT MOVE" /></div>,
+  'LQ-06': LiquidButton => (
+    <div className="lbtn-demo">
+      <LiquidButton label="Get started" color="#38bdf8" ink="#04131c" />
+      <LiquidButton label="Download" color="#a78bfa" ink="#160b2e" />
+      <LiquidButton label="Subscribe" color="#34d399" ink="#03140d" />
+    </div>
+  ),
   'PP-05': Scribble => (
     <div className="scrib-demo">
       <p>

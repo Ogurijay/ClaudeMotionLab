@@ -1,0 +1,15 @@
+.lbtn {
+  position: relative;
+  width: 240px;
+  height: 72px;
+  padding: 0;
+  border: 2px solid var(--lbtn);
+  border-radius: 999px;
+  background: transparent;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+.lbtn:hover { box-shadow: 0 10px 40px -12px var(--lbtn); }
+.lbtn:active { transform: scale(0.97); }
+.lbtn canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
