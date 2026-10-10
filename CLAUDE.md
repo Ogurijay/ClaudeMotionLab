@@ -10,6 +10,7 @@ Claude Motion Lab: original 3D & UI motion components (React 19 + Three.js + GLS
 
 - `npm run dev` — dev server
 - `npm run build` — production build (must pass before committing)
+- Pushing to `main` deploys to GitHub Pages (`.github/workflows/deploy.yml`); live at https://ogurijay.github.io/ClaudeMotionLab/
 
 ## Where things live
 
@@ -17,6 +18,7 @@ Claude Motion Lab: original 3D & UI motion components (React 19 + Three.js + GLS
 - `src/app/` — showcase page shell only; effects must never import from here
 - `src/hooks/` — hooks shared by two or more effects
 - `src/lib/` — non-hook modules shared by effects (e.g. `glsim.js` for multi-pass GPU simulations)
+- `src/app/demos.jsx` — showcase-only props per effect (e.g. lighter counts on small screens)
 - `docs/EFFECTS.md` — single source of truth for effect IDs, names, descriptions and status
 
 ## Rules
@@ -25,4 +27,5 @@ Claude Motion Lab: original 3D & UI motion components (React 19 + Three.js + GLS
 - When adding or finishing an effect, update `docs/EFFECTS.md` and the `[Unreleased]` section of `CHANGELOG.md` in the same commit.
 - Keep the WebGL context budget in mind (`docs/ARCHITECTURE.md`): pause offscreen, dispose all GPU resources on unmount.
 - Do not use React StrictMode (it double-creates WebGL contexts in dev).
+- Single-branch workflow: commit directly on `main`, no feature branches.
 - Project docs are written in Chinese; code, comments and commit messages in English.

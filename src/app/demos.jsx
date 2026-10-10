@@ -1,8 +1,13 @@
 // Showcase-specific wrappers for effects that need more than <Effect /> to demo well.
 // Keyed by effect id; receives the loaded component. Effects without an entry render as <Effect />.
 
+// lighter workloads on phones and small tablets
+const small = () => window.innerWidth < 700
+
 export const demos = {
-  'CY-02': ParticleMorph => <ParticleMorph words={['MOTION', 'LAB']} />,
+  'CY-02': ParticleMorph => <ParticleMorph words={['MOTION', 'LAB']} count={small() ? 9000 : 18000} />,
+  'OR-01': GrassField => <GrassField count={small() ? 20000 : 60000} />,
+  'OR-02': Fireflies => <Fireflies count={small() ? 110 : 180} />,
   'CY-03': HoloCard => (
     <div className="cards">
       <HoloCard number="07" title="Aurora Prism" subtitle="Rare · Holographic" hue={265} emblem="prism" />

@@ -138,6 +138,7 @@ export default function PageCurl({ pages = PAGES }) {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     renderer.domElement.className = 'fx-canvas'
     renderer.domElement.style.cursor = 'grab'
+    renderer.domElement.style.touchAction = 'none'   // dragging must not scroll the page
     mount.appendChild(renderer.domElement)
 
     const scene = new THREE.Scene()
@@ -230,6 +231,7 @@ export default function PageCurl({ pages = PAGES }) {
       if (!dragging) return
       dragging = false
       renderer.domElement.style.cursor = 'grab'
+    renderer.domElement.style.touchAction = 'none'   // dragging must not scroll the page
       if (target.x < 0) { turning = true; target.set(-PW / 2 - PW * 0.55, corner.y * 0.6) }   // finish the turn
       else target.copy(corner)
     }

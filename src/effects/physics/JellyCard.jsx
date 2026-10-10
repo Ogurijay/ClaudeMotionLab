@@ -47,6 +47,7 @@ export default function JellyCard({ stiffness = 0.07, damping = 0.9, hue = 330 }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     renderer.domElement.className = 'fx-canvas'
     renderer.domElement.style.cursor = 'grab'
+    renderer.domElement.style.touchAction = 'none'   // dragging must not scroll the page
     mount.appendChild(renderer.domElement)
 
     const scene = new THREE.Scene()

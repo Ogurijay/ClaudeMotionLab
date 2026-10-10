@@ -5,6 +5,23 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-10-10
+
+First stable release: all seven chapters have their flagship effects, the page is deployed, and the project is documented.
+
+### Added
+- GitHub Pages deployment via GitHub Actions; live demo at https://ogurijay.github.io/ClaudeMotionLab/
+- README rewritten with the full chapter catalog, live demo link and preview collage (`docs/assets/preview.jpg`)
+- Lighter workloads on small screens (particles, grass blades, fireflies)
+
+### Changed
+- Canvases allow vertical page scrolling on touch screens (`touch-action: pan-y`); drag-driven effects opt out
+- `HoloCard` text scales with the card via container query units
+- Relative Vite `base` so one build works locally and under the Pages sub-path; three.js split into its own chunk
+
+### Verified
+- Full-page scroll with all 24 effects: peak 4 live WebGL contexts (budget 6), no console errors
+
 ## [0.8.0] - 2026-10-10
 
 ### Added
@@ -94,7 +111,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Long-scroll showcase page
 - PolyForm Noncommercial 1.0.0 license
 
-[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.8.0...HEAD
+[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.8.0...v1.0.0
 [0.8.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.5.0...v0.6.0

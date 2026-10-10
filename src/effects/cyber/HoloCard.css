@@ -8,6 +8,7 @@
   aspect-ratio: 5 / 7;
   perspective: 900px;
   cursor: grab;
+  container-type: inline-size;   /* card text scales with the card width */
 }
 
 .holo__body {
@@ -98,7 +99,7 @@
 
 .holo__content {
   position: absolute;
-  inset: 22px;
+  inset: 7cqw;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -108,14 +109,14 @@
 
 .holo__num {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
+  font-size: max(9px, 4cqw);
   letter-spacing: 0.12em;
   color: rgb(255 255 255 / 0.75);
 }
 
 .holo__title {
   margin: 0;
-  font-size: 30px;
+  font-size: 10cqw;
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1;
@@ -123,8 +124,8 @@
 }
 
 .holo__sub {
-  margin: 8px 0 0;
-  font-size: 13px;
+  margin: 2.6cqw 0 0;
+  font-size: max(9px, 4.3cqw);
   color: rgb(255 255 255 / 0.7);
 }
 

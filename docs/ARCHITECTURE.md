@@ -101,7 +101,19 @@ ClaudeMotionLab/
 | 粒子数量 | 单个效果不超过 20k（可通过 props 调整） |
 | 资源 | 效果优先程序化生成纹理与图案，尽量不依赖外部图片 |
 
-### 无障碍
+### 移动端
+
+- `.fx-canvas` 默认 `touch-action: pan-y`：手指在效果上也能纵向滚动页面；需要拖拽的效果（FallingSand、PageCurl、JellyCard、ClothBanner）在自身画布上设为 `none`
+- 小屏（宽度 < 700px）由 `src/app/demos.jsx` 传入更轻的参数：粒子、草叶、萤火虫数量减半左右
+- 组件内部文字尺寸优先用容器查询单位（如 HoloCard 的 `cqw`），随组件宽度缩放
+
+## 构建与部署
+
+- `vite.config.js` 使用相对 `base: './'`，同一份构建既能本地预览，也能部署在 GitHub Pages 的子路径下
+- three.js 单独分包（约 540 kB，gzip 后约 133 kB），每个效果是独立的懒加载 chunk
+- `.github/workflows/deploy.yml`：推送 `main` 后自动 `npm ci && npm run build` 并发布到 GitHub Pages
+
+## 无障碍
 
 - 支持 `prefers-reduced-motion`：CSS 过渡与动画变为瞬时；基于 `useShaderCanvas` 的效果时间流速降为 15%
 - 纯装饰性元素使用 `aria-hidden`；文字类效果在容器上保留完整的 `aria-label`

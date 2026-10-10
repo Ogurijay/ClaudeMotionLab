@@ -16,7 +16,7 @@
 | P5 | Paper 纸张章首发：PP-01 PageCurl、PP-04 InkBleed、PP-05 ScribbleUnderline | `done` |
 | P6 | Glass & Light 光影章首发：GL-01 RefractionLens、GL-02 PrismText、GL-03 GodRays | `done` |
 | P7 | Physics 物理章首发：PH-01 JellyCard、PH-02 ClothBanner、PH-03 MagnetDots | `done` |
-| P8 | 打磨与发布：性能审计、移动端适配、GitHub Pages 部署 | `planned` |
+| P8 | 打磨与发布：性能审计、移动端适配、GitHub Pages 部署 | `done` |
 | P9 | 扩充批次：各章剩余的批次 2 效果（共 14 个，含 CY-07、CY-08） | `planned` |
 
 P2 ~ P7 每章先做 3 个精品首发（见 [EFFECTS.md](EFFECTS.md) 的「批次」列），顺序可按优先级调整。全部首发完成并发布后，再进入 P9 扩充。
@@ -57,11 +57,11 @@ P2 ~ P7 每章先做 3 个精品首发（见 [EFFECTS.md](EFFECTS.md) 的「批�
 - [ ] 更新 EFFECTS.md 状态与 CHANGELOG
 - [ ] 每章结束提交一次，确认效果后再进入下一章
 
-## P8 · 打磨与发布
+## P8 · 打磨与发布 `done`
 
-- [ ] 性能审计：各效果在集成显卡上的帧率，必要时提供低画质档位
-- [ ] 移动端适配：触摸交互、低端设备降级
-- [ ] 部署到 GitHub Pages，README 附在线演示链接
+- [x] 性能审计：24 个效果全部上线后复测整页滚动，WebGL 上下文峰值 4 个（预算 6 个）；three.js 独立分包，效果按需懒加载
+- [x] 移动端适配：画布默认允许纵向滚动（`touch-action: pan-y`），拖拽类效果单独拦截触摸；小屏降低粒子 / 草叶 / 萤火虫数量；全息卡片文字改用容器查询单位
+- [x] 部署到 GitHub Pages（GitHub Actions，推送 `main` 自动发布），README 附在线演示链接与预览图
 
 ## P9 · 扩充批次
 
