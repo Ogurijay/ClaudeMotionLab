@@ -1,17 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import Section from './Section.jsx'
 import { transitions } from './transitions'
+import DefaultIntro from './transitions/DefaultIntro.jsx'
 import { effectsByCategory } from './registry.js'
-
-/** Default chapter intro: the title wipes in with the chapter's accent line. */
-function DefaultTransition({ category, active }) {
-  return (
-    <div className={`chapter__intro ${active ? 'is-in' : ''}`}>
-      <span className="chapter__line" />
-      <span className="chapter__prefix">{category.prefix}</span>
-    </div>
-  )
-}
 
 /**
  * One chapter of the long scroll: an intro transition, the chapter header,
@@ -23,7 +14,7 @@ export default function Chapter({ category }) {
   const list = effectsByCategory(category.id)
   const done = list.filter(e => e.status === 'done')
   const upcoming = list.filter(e => e.status !== 'done')
-  const Transition = transitions[category.id] ?? DefaultTransition
+  const Transition = transitions[category.id] ?? DefaultIntro
 
   useEffect(() => {
     const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) setActive(true) }, { threshold: 0.35 })

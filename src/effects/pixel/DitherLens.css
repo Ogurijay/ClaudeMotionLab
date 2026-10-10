@@ -1,0 +1,20 @@
+.dither { position: absolute; inset: 0; cursor: none; }
+.dither__hud {
+  position: absolute;
+  left: 20px;
+  top: 18px;
+  display: flex;
+  gap: 6px;
+  pointer-events: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.dither__hud span {
+  padding: 4px 8px;
+  background: rgb(0 0 0 / 0.55);
+  color: rgb(255 255 255 / 0.5);
+  image-rendering: pixelated;
+}
+.dither__hud span.is-active { background: #facc15; color: #111; }

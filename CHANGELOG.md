@@ -5,6 +5,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-10
+
+### Added
+- **Pixel chapter** flagship effects:
+  - `DitherLens` (PX-02): Bayer 8×8 ordered dithering over a procedural synthwave scene with four palettes; a cursor lens reveals full colour
+  - `FallingSand` (PX-03): cellular-automaton sandbox with sand, water, stone, wood, fire and smoke; paint with the toolbar
+  - `CRTScreen` (PX-05): barrel distortion and chromatic aberration applied to live DOM via SVG filters, scanlines, shadow mask, power on/off animation, interactive terminal
+- Pixel chapter intro transition: a wall of pixel blocks that dissolves
+- `DefaultIntro` extracted so custom chapter transitions can compose it
+
 ## [0.2.0] - 2026-10-10
 
 ### Added
@@ -30,6 +40,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Long-scroll showcase page
 - PolyForm Noncommercial 1.0.0 license
 
-[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/Ogurijay/ClaudeMotionLab/releases/tag/v0.1.0
