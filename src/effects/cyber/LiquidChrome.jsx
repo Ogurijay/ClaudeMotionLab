@@ -1,11 +1,7 @@
-import { useEffect, useRef } from 'react'
-import { useVisibility } from '../../hooks/useVisibility'
+import { useRef } from 'react'
+import { useShaderCanvas } from '../../hooks/useShaderCanvas'
 
-const VERT = `#version 300 es
-in vec2 aPos;
-void main() { gl_Position = vec4(aPos, 0.0, 1.0); }`
-
-const FRAG = `#version 300 es
+const FRAG = /* glsl */ `#version 300 es
 precision highp float;
 uniform vec2 uRes;
 uniform float uTime;
@@ -84,88 +80,21 @@ void main() {
  * Hover bulges the metal; click sends out a ripple.
  */
 export default function LiquidChrome({ speed = 1, tint = 0.8, className = '' }) {
-  const canvasRef = useRef(null)
-  const visible = useVisibility(canvasRef)
+  const ripples = useRef(new Float32Array(32).fill(-100)) // 8 × (x, y, startTime, unused)
+  const rippleIdx = useRef(0)
 
-  useEffect(() => {
-    const canvas = canvasRef.current
-    const gl = canvas.getContext('webgl2', { antialias: false })
-    if (!gl) return
-
-    const compile = (type, src) => {
-      const s = gl.createShader(type)
-      gl.shaderSource(s, src)
-      gl.compileShader(s)
-      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s))
-      return s
-    }
-    const prog = gl.createProgram()
-    gl.attachShader(prog, compile(gl.VERTEX_SHADER, VERT))
-    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FRAG))
-    gl.linkProgram(prog)
-    gl.useProgram(prog)
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer())
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW)
-    const aPos = gl.getAttribLocation(prog, 'aPos')
-    gl.enableVertexAttribArray(aPos)
-    gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0)
-
-    const U = name => gl.getUniformLocation(prog, name)
-    const uRes = U('uRes'), uTime = U('uTime'), uMouse = U('uMouse'), uRipples = U('uRipples'), uTint = U('uTint')
-
-    const ripples = new Float32Array(32).fill(-100)
-    let rippleIdx = 0
-    const mouse = { x: 0.5, y: 0.5, tx: 0.5, ty: 0.5 }
-    const t0 = performance.now()
-    const now = () => ((performance.now() - t0) / 1000) * speed
-
-    const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio, 1.5)
-      const r = canvas.getBoundingClientRect()
-      canvas.width = Math.max(1, (r.width * dpr) | 0)
-      canvas.height = Math.max(1, (r.height * dpr) | 0)
-      gl.viewport(0, 0, canvas.width, canvas.height)
-    }
-    resize()
-    const ro = new ResizeObserver(resize)
-    ro.observe(canvas)
-
-    const toUv = e => {
-      const r = canvas.getBoundingClientRect()
-      return [(e.clientX - r.left) / r.width, 1 - (e.clientY - r.top) / r.height]
-    }
-    const onMove = e => { [mouse.tx, mouse.ty] = toUv(e) }
-    const onDown = e => {
-      const [x, y] = toUv(e)
-      ripples.set([x, y, now(), 0], rippleIdx * 4)
-      rippleIdx = (rippleIdx + 1) % 8
-    }
-    window.addEventListener('pointermove', onMove)
-    canvas.addEventListener('pointerdown', onDown)
-
-    let raf
-    const loop = () => {
-      raf = requestAnimationFrame(loop)
-      if (!visible.current) return
-      mouse.x += (mouse.tx - mouse.x) * 0.06
-      mouse.y += (mouse.ty - mouse.y) * 0.06
-      gl.uniform2f(uRes, canvas.width, canvas.height)
-      gl.uniform1f(uTime, now())
-      gl.uniform2f(uMouse, mouse.x, mouse.y)
-      gl.uniform4fv(uRipples, ripples)
-      gl.uniform1f(uTint, tint)
-      gl.drawArrays(gl.TRIANGLES, 0, 3)
-    }
-    loop()
-
-    return () => {
-      cancelAnimationFrame(raf)
-      ro.disconnect()
-      window.removeEventListener('pointermove', onMove)
-      canvas.removeEventListener('pointerdown', onDown)
-    }
-  }, [speed, tint, visible])
+  const canvasRef = useShaderCanvas({
+    fragment: FRAG,
+    speed,
+    onFrame: ({ gl, uniform }) => {
+      gl.uniform4fv(uniform('uRipples'), ripples.current)
+      gl.uniform1f(uniform('uTint'), tint)
+    },
+    onPointerDown: ({ time }, [x, y]) => {
+      ripples.current.set([x, y, time, 0], rippleIdx.current * 4)
+      rippleIdx.current = (rippleIdx.current + 1) % 8
+    },
+  })
 
   return <canvas ref={canvasRef} className={`fx-canvas ${className}`} />
 }

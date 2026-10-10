@@ -18,10 +18,19 @@ ClaudeMotionLab/
 ├── docs/                       项目文档（索引见 docs/README.md）
 ├── public/                     静态资源（按需创建）
 ├── src/
-│   ├── main.jsx                入口：挂载 App、引入全局样式
+│   ├── main.jsx                入口：挂载 App、引入样式
 │   ├── app/                    展示页外壳（与具体效果无关的页面结构）
-│   │   ├── App.jsx             页面编排
-│   │   └── Section.jsx         单个效果的展示区块
+│   │   ├── App.jsx             页面编排：Hero → 侧边导航 → 各章节
+│   │   ├── registry.js         效果注册表（页面由它自动生成）
+│   │   ├── demos.jsx           需要特殊包装才好展示的效果（按编号）
+│   │   ├── Hero.jsx            首屏：背景效果、标题、章节目录
+│   │   ├── Chapter.jsx         章节：过场 + 标题 + 已完成效果 + 即将推出卡片
+│   │   ├── ChapterNav.jsx      侧边吸附导航：当前章节高亮、滚动进度
+│   │   ├── Section.jsx         单个效果的展示区块 + 源码按钮
+│   │   ├── EffectView.jsx      按需加载效果模块并渲染 demo
+│   │   ├── LazyMount.jsx       视口懒挂载 / 卸载
+│   │   ├── SourceViewer.jsx    源码面板：props 解析、语法高亮、复制
+│   │   └── transitions/        各章节的自定义过场（index.js 按类别登记）
 │   ├── effects/                所有效果组件，按类别分文件夹
 │   │   ├── cyber/              CY · 赛博霓虹
 │   │   │   ├── index.js        本类别的统一导出
@@ -36,26 +45,16 @@ ClaudeMotionLab/
 │   │   ├── glass/              GL · 光影（P6）
 │   │   └── physics/            PH · 物理（P7）
 │   ├── hooks/                  跨效果复用的 hooks
-│   │   └── useVisibility.js
+│   │   ├── useShaderCanvas.js  全屏片元着色器底座
+│   │   ├── useVisibility.js    视口可见性（用于暂停渲染）
+│   │   └── useReducedMotion.js 系统「减少动效」偏好
 │   └── styles/
-│       └── global.css          全局样式与展示页样式
+│       ├── global.css          基础样式、首屏、效果区块
+│       └── showcase.css        展示页外壳：章节、导航、即将推出卡片、源码面板
 ├── CHANGELOG.md
 ├── CLAUDE.md                   给 AI 助手的项目说明
 ├── LICENSE.md
 └── README.md
-```
-
-P1 计划新增的部分：
-
-```
-src/
-├── app/
-│   ├── registry.js             效果注册表
-│   ├── LazyMount.jsx           视口懒挂载
-│   ├── ChapterNav.jsx          侧边章节导航
-│   └── Chapter.jsx             章节容器 + 过场插槽
-└── hooks/
-    └── useShaderCanvas.js      全屏着色器共享 hook
 ```
 
 ### 分层原则
@@ -78,17 +77,18 @@ src/
 
 ## 生命周期与性能
 
-### 视口暂停（已实现）
+### 视口暂停
 
 `useVisibility(ref)` 基于 IntersectionObserver，返回一个 `.current` 随可见性变化的 ref。渲染循环在不可见时直接跳过绘制，requestAnimationFrame 照常调度，但几乎不耗资源。
 
-### WebGL 上下文预算（P1）
+### WebGL 上下文预算
 
 浏览器对同一页面的活跃 WebGL 上下文数量有上限（Chrome 约为 16 个），超出时会强制丢失最早创建的上下文。全部效果做完后，WebGL 效果会有 25 个以上，因此：
 
 - 由 `LazyMount` 控制挂载：进入视口 ±1 屏范围内挂载，超出 ±2 屏卸载（滞后区间用来避免边界抖动）
-- 目标：同时活跃的 WebGL 上下文 **不超过 6 个**
-- 组件卸载时必须释放全部 GPU 资源（geometry、material、texture、renderer）
+- 目标：同时活跃的 WebGL 上下文 **不超过 6 个**（P1 实测：1440×900 视口滚动整页，峰值 3 个）
+- 组件卸载时必须释放全部 GPU 资源（geometry、material、texture、renderer），并主动释放上下文：
+  `useShaderCanvas` 调用 `WEBGL_lose_context`，Three.js 效果调用 `renderer.forceContextLoss()`
 
 ### 性能基线
 
@@ -101,31 +101,57 @@ src/
 
 ### 无障碍
 
-- P1 起支持 `prefers-reduced-motion`：降级为静态画面或低频动画
+- 支持 `prefers-reduced-motion`：CSS 过渡与动画变为瞬时；基于 `useShaderCanvas` 的效果时间流速降为 15%
 - 纯装饰性元素使用 `aria-hidden`；文字类效果在容器上保留完整的 `aria-label`
 
-## 效果注册表结构（P1 草案）
+## 效果注册表
+
+`src/app/registry.js` 导出 `categories`（7 个章节，含前缀、标题、主色、描述）和 `effects`（全部 38 个效果）。页面完全由它生成：
+
+- `status: 'done'` 的效果渲染为可交互的展示区块（必须提供 `load` 与 `files`）
+- 其余效果在所属章节末尾渲染为「即将推出」卡片
 
 ```js
-// src/app/registry.js
-export const categories = [
-  { id: 'cyber', prefix: 'CY', title: 'Cyber', subtitle: '赛博霓虹' },
-  // ...
-]
-
-export const effects = [
-  {
-    id: 'CY-01',
-    category: 'cyber',
-    name: 'LiquidChrome',
-    tags: ['WebGL2', 'GLSL'],
-    hint: '移动鼠标让金属鼓起 · 点击荡开涟漪',
-    component: () => import('../effects/cyber/LiquidChrome.jsx'),
-    stage: 'default',            // default | bare（自带全屏 / 滚动布局）
-    webgl: true,                 // 计入上下文预算
-  },
-  // ...
-]
+{
+  id: 'CY-01',
+  category: 'cyber',
+  name: 'LiquidChrome',
+  status: 'done',              // done | wip | planned
+  wave: 1,                     // 1 = 精品首发，2 = 扩充
+  desc: '液态金属表面……',
+  tags: ['WebGL2', 'GLSL'],
+  hint: '移动鼠标让金属鼓起 · 点击荡开涟漪',
+  load: () => import('../effects/cyber/LiquidChrome.jsx'),
+  files: ['cyber/LiquidChrome.jsx'],   // 源码面板展示的文件（相对 src/effects/）
+  layout: 'stage',             // stage（默认，放进统一舞台）| bare（自带布局，如滚动驱动）
+  height: '528vh',             // bare 效果卸载时的占位高度
+  webgl: true,                 // 占用 WebGL 上下文
+}
 ```
 
+需要特殊包装才好展示的效果（例如三张卡片并排、居中容器），在 `src/app/demos.jsx` 中按编号登记渲染函数；未登记的效果直接渲染为 `<Effect />`。
+
 编号、名称、描述与 [EFFECTS.md](EFFECTS.md) 保持一致。
+
+## 源码面板
+
+`SourceViewer` 通过 `import.meta.glob('../effects/**/*', { query: '?raw' })` 按需读取效果源文件：
+
+- **Props 标签**：从 `export default function Name({ ... })` 的解构参数中自动解析出 props 及默认值，因此组件签名本身就是文档（见 CONVENTIONS「props 都有默认值」）
+- **文件标签**：`files` 中的每个文件，用 sugar-high 做语法高亮，可一键复制
+
+## 共享着色器底座 `useShaderCanvas`
+
+全屏片元着色器类效果只需提供 GLSL 和少量回调：
+
+```jsx
+const canvasRef = useShaderCanvas({
+  fragment: FRAG,                          // GLSL ES 3.0
+  speed: 1,
+  onFrame: ({ gl, uniform, time }) => { /* 设置自定义 uniform */ },
+  onPointerDown: (ctx, [u, v]) => { /* 点击 */ },
+})
+return <canvas ref={canvasRef} className="fx-canvas" />
+```
+
+hook 负责上下文与程序创建、全屏三角形、DPR 上限、尺寸自适应、平滑鼠标、视口暂停、减少动效降级，以及卸载时释放上下文。着色器中声明了 `uRes`、`uTime`、`uMouse` 时会自动赋值。

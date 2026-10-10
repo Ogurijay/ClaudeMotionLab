@@ -12,6 +12,10 @@
 | `planned` | 已规划，未开始 |
 | `idea` | 候选想法，尚未确认是否要做 |
 
+## 批次说明
+
+每章先做 3 个**精品首发**（批次 `1`），确认质量后再做**扩充**（批次 `2`）。Cyber 章的 6 个已完成效果计为首发批次。
+
 ## 编号规则
 
 `<类别前缀>-<两位序号>`，例如 `PX-03`。编号一经分配不再复用；效果被废弃时把状态标为 `dropped`，不删除记录。
@@ -28,16 +32,16 @@
 
 ## 总览
 
-| 前缀 | 类别 | 视觉语言 | 效果数 | 已完成 |
-|---|---|---|---|---|
-| `CY` | Cyber 赛博霓虹 | 霓虹、金属、全息、暗色高对比 | 8 | 6 |
-| `PX` | Pixel 像素 / 8-bit | 低分辨率、抖动、复古屏幕、像素物理 | 6 | 0 |
-| `LQ` | Liquid 水滴 / 流体 | 折射、流动、融合、表面张力 | 6 | 0 |
-| `OR` | Organic 自然 / 有机 | 生长、群体、风、自然纹理 | 5 | 0 |
-| `PP` | Paper 纸张 / 手作 | 纸张质感、折叠、墨水、手绘笔触 | 5 | 0 |
-| `GL` | Glass & Light 玻璃 / 光影 | 折射、色散、体积光、明暗 | 4 | 0 |
-| `PH` | Physics 弹性 / 物理 | 软体、布料、磁力、重力 | 4 | 0 |
-| | **合计** | | **38** | **6** |
+| 前缀 | 类别 | 视觉语言 | 效果数 | 首发 | 已完成 |
+|---|---|---|---|---|---|
+| `CY` | Cyber 赛博霓虹 | 霓虹、金属、全息、暗色高对比 | 8 | 6 | 6 |
+| `PX` | Pixel 像素 / 8-bit | 低分辨率、抖动、复古屏幕、像素物理 | 6 | 3 | 0 |
+| `LQ` | Liquid 水滴 / 流体 | 折射、流动、融合、表面张力 | 6 | 3 | 0 |
+| `OR` | Organic 自然 / 有机 | 生长、群体、风、自然纹理 | 5 | 3 | 0 |
+| `PP` | Paper 纸张 / 手作 | 纸张质感、折叠、墨水、手绘笔触 | 5 | 3 | 0 |
+| `GL` | Glass & Light 玻璃 / 光影 | 折射、色散、体积光、明暗 | 4 | 3 | 0 |
+| `PH` | Physics 弹性 / 物理 | 软体、布料、磁力、重力 | 4 | 3 | 0 |
+| | **合计** | | **38** | **24** | **6** |
 
 ---
 
@@ -45,88 +49,88 @@
 
 暗色背景、霓虹配色、金属与全息材质，强调科技感与高对比。
 
-| 编号 | 组件 | 描述 | 交互 | 技术 | 状态 |
-|---|---|---|---|---|---|
-| CY-01 | `LiquidChrome` | 液态金属表面：域扭曲 fbm 高度场 + 伪环境反射 + 虹彩 | 鼠标鼓起金属，点击荡开涟漪 | `shader` | `done` |
-| CY-02 | `ParticleMorph` | 18k 粒子在文字 / 球体 / 环面结 / 星系之间错峰变形 | 自动变形，点击切换，粒子躲避鼠标 | `three` | `done` |
-| CY-03 | `HoloCard` | 全息卡牌：弹簧倾斜、彩虹箔面、闪粉、高光、图层视差 | 鼠标在卡面移动 | `dom` | `done` |
-| CY-04 | `KineticType` | 可变字重弹簧文字：近鼠标字母变粗、被推开、随速度倾斜 | 鼠标划过文字；无鼠标时字重波浪 | `dom` | `done` |
-| CY-05 | `WaveLines` | 山脊线（Unknown Pleasures 风格），前后遮挡、噪声流动 | 鼠标隆起山峰 | `canvas` | `done` |
-| CY-06 | `SpiralGallery` | 滚动驱动的螺旋隧道画廊，卡片随速度弯曲、RGB 色散 | 页面滚动 | `three` | `done` |
-| CY-07 | `GlitchImage` | 图片 RGB 通道撕裂、扫描行错位、块状数据损坏 | 悬停触发，强度随鼠标速度 | `shader` | `planned` |
-| CY-08 | `HoloScanner` | 全息扫描线自上而下显影内容，带噪点与闪烁 | 进入视口触发 / 点击重扫 | `shader` | `planned` |
+| 编号 | 组件 | 描述 | 交互 | 技术 | 批次 | 状态 |
+|---|---|---|---|---|---|---|
+| CY-01 | `LiquidChrome` | 液态金属表面：域扭曲 fbm 高度场 + 伪环境反射 + 虹彩 | 鼠标鼓起金属，点击荡开涟漪 | `shader` | 1 | `done` |
+| CY-02 | `ParticleMorph` | 18k 粒子在文字 / 球体 / 环面结 / 星系之间错峰变形 | 自动变形，点击切换，粒子躲避鼠标 | `three` | 1 | `done` |
+| CY-03 | `HoloCard` | 全息卡牌：弹簧倾斜、彩虹箔面、闪粉、高光、图层视差 | 鼠标在卡面移动 | `dom` | 1 | `done` |
+| CY-04 | `KineticType` | 可变字重弹簧文字：近鼠标字母变粗、被推开、随速度倾斜 | 鼠标划过文字；无鼠标时字重波浪 | `dom` | 1 | `done` |
+| CY-05 | `WaveLines` | 山脊线（Unknown Pleasures 风格），前后遮挡、噪声流动 | 鼠标隆起山峰 | `canvas` | 1 | `done` |
+| CY-06 | `SpiralGallery` | 滚动驱动的螺旋隧道画廊，卡片随速度弯曲、RGB 色散 | 页面滚动 | `three` | 1 | `done` |
+| CY-07 | `GlitchImage` | 图片 RGB 通道撕裂、扫描行错位、块状数据损坏 | 悬停触发，强度随鼠标速度 | `shader` | 2 | `planned` |
+| CY-08 | `HoloScanner` | 全息扫描线自上而下显影内容，带噪点与闪烁 | 进入视口触发 / 点击重扫 | `shader` | 2 | `planned` |
 
 ## PX · Pixel 像素 / 8-bit
 
 低分辨率、有限调色板、抖动与复古显示设备质感。
 
-| 编号 | 组件 | 描述 | 交互 | 技术 | 状态 |
-|---|---|---|---|---|---|
-| PX-01 | `PixelDissolve` | 图片在高清与马赛克之间过渡，像素块逐格错峰溶解 | 悬停或滚动驱动 | `shader` | `planned` |
-| PX-02 | `DitherLens` | 整图 Bayer 有序抖动（1-bit / GameBoy 四色），鼠标处像透镜一样还原全彩 | 鼠标透镜 | `shader` | `planned` |
-| PX-03 | `FallingSand` | 像素沙盘：沙、水、火、石的元胞自动机，堆积、流动、燃烧 | 鼠标绘制，切换材料 | `sim` | `planned` |
-| PX-04 | `PixelText` | 文字由像素块像俄罗斯方块一样掉落拼成，点击炸散后重组 | 点击 | `canvas` | `planned` |
-| PX-05 | `CRTScreen` | 给任意子内容套显像管效果：扫描线、桶形畸变、荧光拖影、开关机动画 | 开关按钮 | `dom` + `shader` | `planned` |
-| PX-06 | `PixelTrail` | 鼠标拖尾生成像素火花，点击产生 8-bit 爆炸粒子 | 鼠标移动 / 点击 | `canvas` | `planned` |
+| 编号 | 组件 | 描述 | 交互 | 技术 | 批次 | 状态 |
+|---|---|---|---|---|---|---|
+| PX-01 | `PixelDissolve` | 图片在高清与马赛克之间过渡，像素块逐格错峰溶解 | 悬停或滚动驱动 | `shader` | 2 | `planned` |
+| PX-02 | `DitherLens` | 整图 Bayer 有序抖动（1-bit / GameBoy 四色），鼠标处像透镜一样还原全彩 | 鼠标透镜 | `shader` | 1 | `planned` |
+| PX-03 | `FallingSand` | 像素沙盘：沙、水、火、石的元胞自动机，堆积、流动、燃烧 | 鼠标绘制，切换材料 | `sim` | 1 | `planned` |
+| PX-04 | `PixelText` | 文字由像素块像俄罗斯方块一样掉落拼成，点击炸散后重组 | 点击 | `canvas` | 2 | `planned` |
+| PX-05 | `CRTScreen` | 给任意子内容套显像管效果：扫描线、桶形畸变、荧光拖影、开关机动画 | 开关按钮 | `dom` + `shader` | 1 | `planned` |
+| PX-06 | `PixelTrail` | 鼠标拖尾生成像素火花，点击产生 8-bit 爆炸粒子 | 鼠标移动 / 点击 | `canvas` | 2 | `planned` |
 
 ## LQ · Liquid 水滴 / 流体
 
 折射、流动、融合与表面张力，强调湿润和通透感。
 
-| 编号 | 组件 | 描述 | 交互 | 技术 | 状态 |
-|---|---|---|---|---|---|
-| LQ-01 | `RainGlass` | 雨滴落在玻璃上折射背景，水珠滑落、合并并留下水痕 | 鼠标擦出清晰区域 | `shader` | `planned` |
-| LQ-02 | `InkFluid` | GPU Navier–Stokes 流体，鼠标搅动出墨水 / 烟雾 | 拖动 | `sim` | `planned` |
-| LQ-03 | `RipplePond` | 水面高度场涟漪 + 池底焦散光斑 | 点击滴水 | `sim` | `planned` |
-| LQ-04 | `GooeyMenu` | 元球融合的液态菜单，按钮像水银一样分离、融合 | 点击展开 / 收起 | `dom`（SVG 滤镜） | `planned` |
-| LQ-05 | `BubbleField` | 肥皂泡薄膜干涉彩虹，漂浮、碰撞，可戳破 | 点击戳破 | `three` | `planned` |
-| LQ-06 | `LiquidButton` | 悬停时液面晃动着注满按钮，离开时退潮 | 悬停 | `canvas` | `planned` |
+| 编号 | 组件 | 描述 | 交互 | 技术 | 批次 | 状态 |
+|---|---|---|---|---|---|---|
+| LQ-01 | `RainGlass` | 雨滴落在玻璃上折射背景，水珠滑落、合并并留下水痕 | 鼠标擦出清晰区域 | `shader` | 1 | `planned` |
+| LQ-02 | `InkFluid` | GPU Navier–Stokes 流体，鼠标搅动出墨水 / 烟雾 | 拖动 | `sim` | 1 | `planned` |
+| LQ-03 | `RipplePond` | 水面高度场涟漪 + 池底焦散光斑 | 点击滴水 | `sim` | 2 | `planned` |
+| LQ-04 | `GooeyMenu` | 元球融合的液态菜单，按钮像水银一样分离、融合 | 点击展开 / 收起 | `dom`（SVG 滤镜） | 1 | `planned` |
+| LQ-05 | `BubbleField` | 肥皂泡薄膜干涉彩虹，漂浮、碰撞，可戳破 | 点击戳破 | `three` | 2 | `planned` |
+| LQ-06 | `LiquidButton` | 悬停时液面晃动着注满按钮，离开时退潮 | 悬停 | `canvas` | 2 | `planned` |
 
 ## OR · Organic 自然 / 有机
 
 生长、群体行为与自然纹理，强调生命感和缓慢的节奏。
 
-| 编号 | 组件 | 描述 | 交互 | 技术 | 状态 |
-|---|---|---|---|---|---|
-| OR-01 | `GrassField` | 上万根草随风摆动（实例化渲染），鼠标划过时被压弯 | 鼠标划过 | `three` | `planned` |
-| OR-02 | `Fireflies` | 萤火虫群体行为（Boids），明灭闪烁，跟随或躲避鼠标 | 鼠标 / 点击切换模式 | `three` | `planned` |
-| OR-03 | `ReactionDiffusion` | Gray–Scott 反应扩散，实时生长出豹纹 / 珊瑚 / 指纹图案 | 鼠标播种，切换预设 | `sim` | `planned` |
-| OR-04 | `GrowingVines` | 藤蔓沿容器边缘生长、分叉、开花 | 进入视口生长 | `canvas` | `planned` |
-| OR-05 | `AuroraSky` | 极光丝带 + 星空，随滚动缓慢流动 | 页面滚动 | `shader` | `planned` |
+| 编号 | 组件 | 描述 | 交互 | 技术 | 批次 | 状态 |
+|---|---|---|---|---|---|---|
+| OR-01 | `GrassField` | 上万根草随风摆动（实例化渲染），鼠标划过时被压弯 | 鼠标划过 | `three` | 1 | `planned` |
+| OR-02 | `Fireflies` | 萤火虫群体行为（Boids），明灭闪烁，跟随或躲避鼠标 | 鼠标 / 点击切换模式 | `three` | 1 | `planned` |
+| OR-03 | `ReactionDiffusion` | Gray–Scott 反应扩散，实时生长出豹纹 / 珊瑚 / 指纹图案 | 鼠标播种，切换预设 | `sim` | 1 | `planned` |
+| OR-04 | `GrowingVines` | 藤蔓沿容器边缘生长、分叉、开花 | 进入视口生长 | `canvas` | 2 | `planned` |
+| OR-05 | `AuroraSky` | 极光丝带 + 星空，随滚动缓慢流动 | 页面滚动 | `shader` | 2 | `planned` |
 
 ## PP · Paper 纸张 / 手作
 
 纸张纹理、折叠、墨水与手绘笔触，强调触感和手工温度。
 
-| 编号 | 组件 | 描述 | 交互 | 技术 | 状态 |
-|---|---|---|---|---|---|
-| PP-01 | `PageCurl` | 可拖拽翻页的卷曲卡片，背面带阴影与纸张纹理 | 拖拽角落 | `three` | `planned` |
-| PP-02 | `OrigamiFold` | 内容像折纸一样分段折叠 / 展开 | 点击或滚动 | `dom` | `planned` |
-| PP-03 | `TornReveal` | 撕纸效果，撕开顶层露出下层内容，撕边不规则 | 拖拽撕开 | `canvas` | `planned` |
-| PP-04 | `InkBleed` | 文字像墨水滴在宣纸上晕开显现 | 进入视口触发 | `shader` | `planned` |
-| PP-05 | `ScribbleUnderline` | 手绘笔触下划线、圈注、箭头，一笔一画绘出 | 悬停 / 进入视口 | `dom`（SVG） | `planned` |
+| 编号 | 组件 | 描述 | 交互 | 技术 | 批次 | 状态 |
+|---|---|---|---|---|---|---|
+| PP-01 | `PageCurl` | 可拖拽翻页的卷曲卡片，背面带阴影与纸张纹理 | 拖拽角落 | `three` | 1 | `planned` |
+| PP-02 | `OrigamiFold` | 内容像折纸一样分段折叠 / 展开 | 点击或滚动 | `dom` | 2 | `planned` |
+| PP-03 | `TornReveal` | 撕纸效果，撕开顶层露出下层内容，撕边不规则 | 拖拽撕开 | `canvas` | 2 | `planned` |
+| PP-04 | `InkBleed` | 文字像墨水滴在宣纸上晕开显现 | 进入视口触发 | `shader` | 1 | `planned` |
+| PP-05 | `ScribbleUnderline` | 手绘笔触下划线、圈注、箭头，一笔一画绘出 | 悬停 / 进入视口 | `dom`（SVG） | 1 | `planned` |
 
 ## GL · Glass & Light 玻璃 / 光影
 
 真实的折射、色散与光线，强调通透和戏剧化的明暗。
 
-| 编号 | 组件 | 描述 | 交互 | 技术 | 状态 |
-|---|---|---|---|---|---|
-| GL-01 | `RefractionLens` | 真实折射的玻璃球 / 透镜在内容上滑过（非普通毛玻璃） | 鼠标拖动透镜 | `shader` | `planned` |
-| GL-02 | `PrismText` | 文字棱镜色散，彩虹边随光源方向变化 | 鼠标作为光源 | `shader` | `planned` |
-| GL-03 | `GodRays` | 体积光从元素背后透出，光束随鼠标偏转 | 鼠标移动 | `shader` | `planned` |
-| GL-04 | `SpotlightReveal` | 黑暗中用手电筒照出隐藏内容，带光晕衰减 | 鼠标移动 | `dom` | `planned` |
+| 编号 | 组件 | 描述 | 交互 | 技术 | 批次 | 状态 |
+|---|---|---|---|---|---|---|
+| GL-01 | `RefractionLens` | 真实折射的玻璃球 / 透镜在内容上滑过（非普通毛玻璃） | 鼠标拖动透镜 | `shader` | 1 | `planned` |
+| GL-02 | `PrismText` | 文字棱镜色散，彩虹边随光源方向变化 | 鼠标作为光源 | `shader` | 1 | `planned` |
+| GL-03 | `GodRays` | 体积光从元素背后透出，光束随鼠标偏转 | 鼠标移动 | `shader` | 1 | `planned` |
+| GL-04 | `SpotlightReveal` | 黑暗中用手电筒照出隐藏内容，带光晕衰减 | 鼠标移动 | `dom` | 2 | `planned` |
 
 ## PH · Physics 弹性 / 物理
 
 软体、布料、磁力与重力，强调可以「上手玩」的物理反馈。
 
-| 编号 | 组件 | 描述 | 交互 | 技术 | 状态 |
-|---|---|---|---|---|---|
-| PH-01 | `JellyCard` | 果冻软体卡片，拖拽时晃动并弹性回弹 | 拖拽 | `three` | `planned` |
-| PH-02 | `ClothBanner` | 图片变成布料（Verlet 积分），被鼠标吹动、拉扯 | 鼠标拖拽 / 吹动 | `three` | `planned` |
-| PH-03 | `MagnetDots` | 点阵像铁屑一样被鼠标磁化，沿磁力线排列 | 鼠标移动 | `canvas` | `planned` |
-| PH-04 | `GravityPile` | 标签掉落堆积，可抓起、甩出、互相碰撞 | 拖拽抛掷 | `canvas` | `planned` |
+| 编号 | 组件 | 描述 | 交互 | 技术 | 批次 | 状态 |
+|---|---|---|---|---|---|---|
+| PH-01 | `JellyCard` | 果冻软体卡片，拖拽时晃动并弹性回弹 | 拖拽 | `three` | 1 | `planned` |
+| PH-02 | `ClothBanner` | 图片变成布料（Verlet 积分），被鼠标吹动、拉扯 | 鼠标拖拽 / 吹动 | `three` | 1 | `planned` |
+| PH-03 | `MagnetDots` | 点阵像铁屑一样被鼠标磁化，沿磁力线排列 | 鼠标移动 | `canvas` | 1 | `planned` |
+| PH-04 | `GravityPile` | 标签掉落堆积，可抓起、甩出、互相碰撞 | 拖拽抛掷 | `canvas` | 2 | `planned` |
 
 ---
 

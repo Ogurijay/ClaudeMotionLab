@@ -266,6 +266,7 @@ export default function ParticleMorph({
         geo.dispose()
         mat.dispose()
         renderer.dispose()
+        renderer.forceContextLoss()
         renderer.domElement.remove()
       }
     })

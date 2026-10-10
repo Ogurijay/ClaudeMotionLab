@@ -182,6 +182,7 @@ export default function SpiralGallery({ count = 24, spacing = 1.7, radius = 2.7 
         mats.forEach(m => m.dispose())
         textures.forEach(t => t.dispose())
         renderer.dispose()
+        renderer.forceContextLoss()
         renderer.domElement.remove()
       }
     })

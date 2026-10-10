@@ -17,10 +17,19 @@
 2. **自包含**：不依赖 `src/app/`，不读写全局状态，可以单独拷贝到其他项目使用。
 3. **props 都有默认值**：组件不传任何 props 也能完整展示效果。颜色、数量、速度、文案等应该可以通过 props 配置。
 4. **填满父容器**：组件根元素铺满父元素（`width/height: 100%` 或 `position: absolute; inset: 0`），尺寸由使用者决定，内部用 ResizeObserver 自适应。
-5. **完整清理**：`useEffect` 的清理函数必须移除所有事件监听、取消 requestAnimationFrame、断开观察器，并释放 GPU 资源。
-6. **视口暂停**：持续动画的效果必须使用 `useVisibility`（或 P1 之后的 `useShaderCanvas`），不可见时跳过渲染。
+5. **完整清理**：`useEffect` 的清理函数必须移除所有事件监听、取消 requestAnimationFrame、断开观察器，并释放 GPU 资源；Three.js 效果额外调用 `renderer.forceContextLoss()`。
+6. **视口暂停**：持续动画的效果必须使用 `useVisibility`（或 `useShaderCanvas`，它已内置），不可见时跳过渲染。
 7. **effect 依赖稳定**：数组、对象类 props 先转成字符串 key（如 `colors.join('|')`）再放入依赖数组，避免每次渲染都重建场景。
 8. **组件顶部写 JSDoc 注释**：一句话说明效果和交互方式。
+
+## 新增一个效果的步骤
+
+1. 在 [EFFECTS.md](EFFECTS.md) 确认编号与描述，状态改为 `wip`
+2. 在 `src/effects/<category>/` 新建 `<Name>.jsx`（需要时加同名 `.css`），并在该类别的 `index.js` 中导出
+3. 全屏着色器类效果优先基于 `useShaderCanvas`，其余类型参照同类已有效果
+4. 在 `src/app/registry.js` 中把该效果的 `status` 改为 `'done'`，补上 `load`、`files`、`hint`、`tags`
+5. 默认渲染不好看时，在 `src/app/demos.jsx` 中按编号登记包装
+6. 对照下文「完成定义」逐项检查，然后同步更新 EFFECTS.md 状态与 CHANGELOG
 
 ## GLSL 约定
 
@@ -38,7 +47,7 @@
 
 ## Git 与提交
 
-- 主分支 `main` 始终可运行；较大的阶段（P1 ~ P8）建议在 `feat/<阶段或类别>` 分支开发，完成后合并
+- 只使用 `main` 一个分支，直接在 `main` 上提交，不建功能分支；每次提交前确保 `npm run build` 通过，`main` 始终可运行
 - 提交信息遵循 [Conventional Commits](https://www.conventionalcommits.org/)，`scope` 使用类别或模块名：
 
 ```
