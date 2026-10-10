@@ -1,6 +1,7 @@
 // Custom chapter intro transitions, keyed by category id.
 // Each receives { category, active } and replaces the default intro for its chapter.
-// Chapters without an entry (cyber) use DefaultIntro.
+// Chapters without an entry fall back to DefaultIntro.
+import CyberTransition from './CyberTransition.jsx'
 import PixelTransition from './PixelTransition.jsx'
 import LiquidTransition from './LiquidTransition.jsx'
 import OrganicTransition from './OrganicTransition.jsx'
@@ -9,6 +10,7 @@ import GlassTransition from './GlassTransition.jsx'
 import PhysicsTransition from './PhysicsTransition.jsx'
 
 export const transitions = {
+  cyber: CyberTransition,
   pixel: PixelTransition,
   liquid: LiquidTransition,
   organic: OrganicTransition,

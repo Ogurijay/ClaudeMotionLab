@@ -45,7 +45,8 @@ ClaudeMotionLab/
 │   │   ├── glass/              GL · 光影（P6）
 │   │   └── physics/            PH · 物理（P7）
 │   ├── lib/                    跨效果复用的非 hook 工具
-│   │   └── glsim.js            多 pass GPU 模拟底座（浮点帧缓冲、双缓冲、程序管理）
+│   │   ├── glsim.js            多 pass GPU 模拟底座（浮点帧缓冲、双缓冲、程序管理）
+│   │   └── artwork.js          程序化插画（海报、风景、证件），作为着色器的图片素材
 │   ├── hooks/                  跨效果复用的 hooks
 │   │   ├── useShaderCanvas.js  全屏片元着色器底座
 │   │   ├── useVisibility.js    视口可见性（用于暂停渲染）

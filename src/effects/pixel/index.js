@@ -1,3 +1,6 @@
 export { default as DitherLens } from './DitherLens.jsx'
 export { default as FallingSand } from './FallingSand.jsx'
 export { default as CRTScreen } from './CRTScreen.jsx'
+export { default as PixelDissolve } from './PixelDissolve.jsx'
+export { default as PixelText } from './PixelText.jsx'
+export { default as PixelTrail } from './PixelTrail.jsx'

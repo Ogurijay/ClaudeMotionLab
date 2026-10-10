@@ -5,6 +5,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-10-10
+
+### Added
+- **Cyber chapter** completed:
+  - `GlitchImage` (CY-07): signal corruption on a neon poster — slice tearing, RGB split, block corruption, rolling, noise; driven by cursor speed, click for a burst
+  - `HoloScanner` (CY-08): a holographic ID card materialises under a scanning beam with flicker and chromatic jitter, then dissolves into static
+  - Cyber chapter intro transition: RGB interference bars before the header locks in
+- **Pixel chapter** completed:
+  - `PixelDissolve` (PX-01): multi-level mosaic that resolves block by block outward from the cursor and crumbles back when it leaves
+  - `PixelText` (PX-04): a word built from blocks that drop in Tetris-style; blocks hop under the cursor, a click blows it apart and it rebuilds
+  - `PixelTrail` (PX-06): 8-bit spark trail with screen persistence, explosions and shock rings
+- `src/lib/artwork.js`: procedural artwork (neon poster, landscape, ID card) used as image sources so effects ship without image assets
+
 ## [1.0.0] - 2026-10-10
 
 First stable release: all seven chapters have their flagship effects, the page is deployed, and the project is documented.
@@ -111,7 +124,8 @@ First stable release: all seven chapters have their flagship effects, the page i
 - Long-scroll showcase page
 - PolyForm Noncommercial 1.0.0 license
 
-[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.8.0...v1.0.0
 [0.8.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.6.0...v0.7.0

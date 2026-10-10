@@ -17,7 +17,7 @@
 | P6 | Glass & Light 光影章首发：GL-01 RefractionLens、GL-02 PrismText、GL-03 GodRays | `done` |
 | P7 | Physics 物理章首发：PH-01 JellyCard、PH-02 ClothBanner、PH-03 MagnetDots | `done` |
 | P8 | 打磨与发布：性能审计、移动端适配、GitHub Pages 部署 | `done` |
-| P9 | 扩充批次：各章剩余的批次 2 效果（共 14 个，含 CY-07、CY-08） | `planned` |
+| P9 | 扩充批次：各章剩余的批次 2 效果（共 14 个，含 CY-07、CY-08） | `wip` |
 
 P2 ~ P7 每章先做 3 个精品首发（见 [EFFECTS.md](EFFECTS.md) 的「批次」列），顺序可按优先级调整。全部首发完成并发布后，再进入 P9 扩充。
 
