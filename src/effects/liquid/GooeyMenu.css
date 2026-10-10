@@ -1,0 +1,105 @@
+.goo {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 90px;
+  background: radial-gradient(ellipse at 50% 40%, color-mix(in srgb, var(--goo) 12%, #06080c), #06080c 70%);
+}
+.goo__defs { position: absolute; width: 0; height: 0; }
+.goo__layer { position: absolute; inset: 0; }
+
+.goo__radial { position: relative; width: 340px; height: 220px; }
+/* the filtered layer must have a real box, otherwise the SVG filter region collapses */
+.goo__blob,
+.goo__item,
+.goo__main {
+  position: absolute;
+  left: calc(50% - 32px);
+  top: calc(100% - 72px);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+}
+.goo__blob {
+  background: var(--goo);
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.goo__blob--main { transform: scale(1.25); transition: transform 0.4s; }
+.goo__blob--main.is-open { transform: scale(1.1); }
+.goo__item {
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.goo__item svg, .goo__tabrow svg { width: 24px; height: 24px; fill: #04131c; transition: transform 0.2s; }
+.goo__item:hover svg { transform: scale(1.25); }
+.goo__main {
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transform: scale(1.25);
+}
+.goo__main span {
+  position: absolute;
+  width: 22px;
+  height: 3px;
+  border-radius: 2px;
+  background: #04131c;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.goo__main span:last-child { transform: rotate(90deg); }
+.goo__main.is-open span:first-child { transform: rotate(45deg); }
+.goo__main.is-open span:last-child { transform: rotate(135deg); }
+.goo__picked {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -18px;
+  margin: 0;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--goo) 70%, white);
+}
+
+.goo__tabs { position: relative; width: min(420px, 86%); height: 76px; }
+.goo__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 38px;
+  height: 38px;
+  border-radius: 20px;
+  background: var(--goo);
+}
+.goo__ind {
+  position: absolute;
+  top: 6px;
+  width: 54px;
+  height: 54px;
+  margin-left: -27px;
+  border-radius: 50%;
+  background: var(--goo);
+  transition: left 0.55s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.goo__tabrow { display: flex; }
+.goo__tabrow button {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding-top: 26px;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.goo__tabrow button svg { opacity: 0.55; }
+.goo__tabrow button.is-active svg { opacity: 1; transform: translateY(-22px) scale(1.1); }

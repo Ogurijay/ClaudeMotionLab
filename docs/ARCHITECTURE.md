@@ -44,6 +44,8 @@ ClaudeMotionLab/
 │   │   ├── paper/              PP · 纸张（P5）
 │   │   ├── glass/              GL · 光影（P6）
 │   │   └── physics/            PH · 物理（P7）
+│   ├── lib/                    跨效果复用的非 hook 工具
+│   │   └── glsim.js            多 pass GPU 模拟底座（浮点帧缓冲、双缓冲、程序管理）
 │   ├── hooks/                  跨效果复用的 hooks
 │   │   ├── useShaderCanvas.js  全屏片元着色器底座
 │   │   ├── useVisibility.js    视口可见性（用于暂停渲染）
@@ -61,7 +63,7 @@ ClaudeMotionLab/
 
 - **`effects/` 只放可复用的效果组件**，不依赖 `app/` 中的任何东西。任何效果都应该能单独拷贝到其他项目使用。
 - **`app/` 只负责展示页**，包括布局、导航、注册表和懒加载，不包含效果的渲染逻辑。
-- **`hooks/` 放被两个及以上效果复用的逻辑**，只被一个效果使用的逻辑留在该组件文件内。
+- **`hooks/` 与 `lib/` 放被两个及以上效果复用的逻辑**（前者是 React hooks，后者是普通模块），只被一个效果使用的逻辑留在该组件文件内。效果可以依赖 `hooks/` 和 `lib/`，但不能依赖 `app/`。
 
 ## 渲染方式
 
@@ -69,7 +71,7 @@ ClaudeMotionLab/
 |---|---|---|---|
 | `shader` | 原生 WebGL2 全屏三角形 + 片元着色器 | LiquidChrome | 1 个 WebGL 上下文 |
 | `three` | Three.js 场景 | ParticleMorph、SpiralGallery | 1 个 WebGL 上下文 |
-| `sim` | 多 pass 模拟（帧缓冲 ping-pong） | InkFluid、ReactionDiffusion | 1 个 WebGL 上下文 |
+| `sim` | 多 pass 模拟（帧缓冲 ping-pong），基于 `lib/glsim.js` | InkFluid、ReactionDiffusion | 1 个 WebGL 上下文 |
 | `canvas` | Canvas 2D | WaveLines | 无 |
 | `dom` | DOM + CSS / SVG | HoloCard、KineticType | 无 |
 

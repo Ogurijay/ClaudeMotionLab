@@ -5,6 +5,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-10
+
+### Added
+- **Liquid chapter** flagship effects:
+  - `RainGlass` (LQ-01): rain on a fogged window over a procedural night-city bokeh (analytic blur); drops refract, slide and leave clear trails; the cursor wipes the fog, which slowly returns
+  - `InkFluid` (LQ-02): GPU stable-fluids simulation with vorticity confinement and lit, hue-preserving ink; stir with the cursor, click to splash
+  - `GooeyMenu` (LQ-04): radial action menu and stretching tab indicator built on an SVG goo filter
+- Liquid chapter intro transition: the header starts flooded, then drains with a rolling surface and bubbles
+- `src/lib/glsim.js`: shared WebGL2 toolkit for multi-pass simulations (half-float targets, ping-pong pairs, programs)
+- Source viewer can show shared code (`hooks/`, `lib/`) next to an effect's own files
+
 ## [0.3.0] - 2026-10-10
 
 ### Added
@@ -40,7 +51,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 - Long-scroll showcase page
 - PolyForm Noncommercial 1.0.0 license
 
-[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/Ogurijay/ClaudeMotionLab/releases/tag/v0.1.0

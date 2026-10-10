@@ -1,8 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 import { highlight } from 'sugar-high'
 
-// Raw source of every effect file, loaded on demand.
-const sources = import.meta.glob('../effects/**/*.{jsx,js,css}', { query: '?raw', import: 'default' })
+// Raw source of every effect file and the shared code effects depend on, loaded on demand.
+const sources = {
+  ...import.meta.glob('../effects/**/*.{jsx,js,css}', { query: '?raw', import: 'default' }),
+  ...import.meta.glob('../hooks/*.js', { query: '?raw', import: 'default' }),
+  ...import.meta.glob('../lib/*.js', { query: '?raw', import: 'default' }),
+}
+// registry `files` are relative to src/effects/ (shared code is referenced as '../hooks/…')
+const sourceKey = f => `../effects/${f}`.replace('/effects/../', '/')
 
 /**
  * Extracts the destructured props of `export default function Name({ a = 1, b })`
@@ -47,7 +53,7 @@ export default function SourceViewer({ effect, onClose }) {
 
   useEffect(() => {
     let alive = true
-    Promise.all(effect.files.map(f => sources[`../effects/${f}`]?.() ?? Promise.resolve('// source not found')))
+    Promise.all(effect.files.map(f => sources[sourceKey(f)]?.() ?? Promise.resolve('// source not found')))
       .then(list => alive && setFiles(Object.fromEntries(effect.files.map((f, i) => [f, list[i]]))))
     return () => { alive = false }
   }, [effect])

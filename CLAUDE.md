@@ -16,6 +16,7 @@ Claude Motion Lab: original 3D & UI motion components (React 19 + Three.js + GLS
 - `src/effects/<category>/` — reusable effect components, one per file (`cyber`, `pixel`, `liquid`, `organic`, `paper`, `glass`, `physics`)
 - `src/app/` — showcase page shell only; effects must never import from here
 - `src/hooks/` — hooks shared by two or more effects
+- `src/lib/` — non-hook modules shared by effects (e.g. `glsim.js` for multi-pass GPU simulations)
 - `docs/EFFECTS.md` — single source of truth for effect IDs, names, descriptions and status
 
 ## Rules
