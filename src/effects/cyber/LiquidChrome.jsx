@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { useVisibility } from '../hooks/useVisibility'
+import { useVisibility } from '../../hooks/useVisibility'
 
 const VERT = `#version 300 es
 in vec2 aPos;

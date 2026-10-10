@@ -1,23 +1,5 @@
-import LiquidChrome from './components/LiquidChrome.jsx'
-import ParticleMorph from './components/ParticleMorph.jsx'
-import HoloCard from './components/HoloCard.jsx'
-import KineticType from './components/KineticType.jsx'
-import WaveLines from './components/WaveLines.jsx'
-import SpiralGallery from './components/SpiralGallery.jsx'
-
-function Section({ idx, name, tags, hint, children, bare = false }) {
-  return (
-    <section className="demo">
-      <header className="demo__head">
-        <span className="demo__idx">{idx}</span>
-        <h2 className="demo__name">{`<${name} />`}</h2>
-        <div className="demo__tags">{tags.map(t => <span key={t}>{t}</span>)}</div>
-        <p className="demo__hint">{hint}</p>
-      </header>
-      {bare ? children : <div className="demo__stage">{children}</div>}
-    </section>
-  )
-}
+import Section from './Section.jsx'
+import { LiquidChrome, ParticleMorph, HoloCard, KineticType, WaveLines, SpiralGallery } from '../effects/cyber'
 
 export default function App() {
   return (

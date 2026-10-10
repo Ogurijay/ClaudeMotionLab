@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { useVisibility } from '../hooks/useVisibility'
+import { useVisibility } from '../../hooks/useVisibility'
 
 // compact 2D gradient noise
 const perm = new Uint8Array(512)

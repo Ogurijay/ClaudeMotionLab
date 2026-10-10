@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
-import { useVisibility } from '../hooks/useVisibility'
+import { useVisibility } from '../../hooks/useVisibility'
 
 // ---------- shape generators: each returns Float32Array(count * 3) ----------
 

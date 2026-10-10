@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { useVisibility } from '../hooks/useVisibility'
+import { useVisibility } from '../../hooks/useVisibility'
 
 /**
  * Variable-font proximity type. Each letter is a spring: it fattens, glows and
