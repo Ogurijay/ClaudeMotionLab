@@ -17,7 +17,7 @@
 | P6 | Glass & Light 光影章首发：GL-01 RefractionLens、GL-02 PrismText、GL-03 GodRays | `done` |
 | P7 | Physics 物理章首发：PH-01 JellyCard、PH-02 ClothBanner、PH-03 MagnetDots | `done` |
 | P8 | 打磨与发布：性能审计、移动端适配、GitHub Pages 部署 | `done` |
-| P9 | 扩充批次：各章剩余的批次 2 效果（共 14 个，含 CY-07、CY-08） | `wip` |
+| P9 | 扩充批次：各章剩余的批次 2 效果（共 14 个，含 CY-07、CY-08） | `done` |
 
 P2 ~ P7 每章先做 3 个精品首发（见 [EFFECTS.md](EFFECTS.md) 的「批次」列），顺序可按优先级调整。全部首发完成并发布后，再进入 P9 扩充。
 
@@ -63,10 +63,11 @@ P2 ~ P7 每章先做 3 个精品首发（见 [EFFECTS.md](EFFECTS.md) 的「批�
 - [x] 移动端适配：画布默认允许纵向滚动（`touch-action: pan-y`），拖拽类效果单独拦截触摸；小屏降低粒子 / 草叶 / 萤火虫数量；全息卡片文字改用容器查询单位
 - [x] 部署到 GitHub Pages（GitHub Actions，推送 `main` 自动发布），README 附在线演示链接与预览图
 
-## P9 · 扩充批次
+## P9 · 扩充批次 `done`
 
-- [ ] 各章批次 `2` 的效果（共 14 个），逐个按完成定义交付
-- [ ] 视情况从候选池中挑选新风格，分配类别与编号后纳入
+- [x] 各章批次 `2` 的效果（共 14 个），分三次发布：v1.1.0（Cyber + Pixel，含 Cyber 章过场）、v1.2.0（Liquid + Organic）、v1.3.0（Paper + Glass + Physics）
+- [x] 全部 38 个效果上线后复测：整页约 45 500px，WebGL 上下文峰值 4 个（预算 6 个）
+- [ ] 视情况从候选池中挑选新风格，分配类别与编号后纳入（后续）
 
 ---
 

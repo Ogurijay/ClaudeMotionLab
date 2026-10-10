@@ -23,6 +23,7 @@ export const demos = {
       <LiquidButton label="Subscribe" color="#34d399" ink="#03140d" />
     </div>
   ),
+  'PP-02': OrigamiFold => <div className="ori-demo"><OrigamiFold /></div>,
   'PP-05': Scribble => (
     <div className="scrib-demo">
       <p>

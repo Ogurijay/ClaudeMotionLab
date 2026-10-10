@@ -5,6 +5,22 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-10-10
+
+All 38 planned effects are live — every chapter is complete.
+
+### Added
+- **Paper chapter** completed:
+  - `OrigamiFold` (PP-02): content folds up like a letter — nested hinged panels flip one after another; unfolds on view, click to toggle
+  - `TornReveal` (PP-03): rip jagged strips out of kraft paper along the drag path; fibrous white edges, strips flutter away, hidden layer underneath
+- **Glass & Light chapter** completed:
+  - `SpotlightReveal` (GL-04): a lagging, flickering flashlight beam reveals a hidden layer under a faint decoy; click to widen / narrow (`@property` transition)
+- **Physics chapter** completed:
+  - `GravityPile` (PH-04): tags rain down and pile up as Verlet rigid boxes with edge-probe collisions; grab and fling them
+
+### Verified
+- Full-page scroll with all 38 effects (~45 500 px): peak 4 live WebGL contexts (budget 6), no console errors
+
 ## [1.2.0] - 2026-10-10
 
 ### Added
@@ -138,7 +154,8 @@ First stable release: all seven chapters have their flagship effects, the page i
 - Long-scroll showcase page
 - PolyForm Noncommercial 1.0.0 license
 
-[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/Ogurijay/ClaudeMotionLab/compare/v0.8.0...v1.0.0
